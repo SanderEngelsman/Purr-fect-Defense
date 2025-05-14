@@ -826,8 +826,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1094010943}
+  - component: {fileID: 1094010944}
   m_Layer: 0
-  m_Name: Waypoints
+  m_Name: Path
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -865,6 +866,36 @@ Transform:
   - {fileID: 278811641}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1094010944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1094010942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f19fec006864a0419e55f2a01d538ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waypoints:
+  - {fileID: 48144265}
+  - {fileID: 202597042}
+  - {fileID: 622507306}
+  - {fileID: 861089818}
+  - {fileID: 1983848325}
+  - {fileID: 1556001737}
+  - {fileID: 1228663943}
+  - {fileID: 971999427}
+  - {fileID: 1133323464}
+  - {fileID: 1021652672}
+  - {fileID: 1033480111}
+  - {fileID: 695893065}
+  - {fileID: 2017520383}
+  - {fileID: 446917570}
+  - {fileID: 1899800929}
+  - {fileID: 502895181}
+  - {fileID: 278811641}
 --- !u!1 &1133323463
 GameObject:
   m_ObjectHideFlags: 0
