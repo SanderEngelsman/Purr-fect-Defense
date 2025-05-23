@@ -1573,7 +1573,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPoint: {fileID: 1408609373}
-  timeBetweenWaves: 2
+  timeBetweenWaves: 10
   waves:
   - enemies:
     - {fileID: 2992963078866100631, guid: ab55f5fb8ebd43a48bcd53da0a9ec3c9, type: 3}

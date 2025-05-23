@@ -97,9 +97,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de4c934c4fbddf14993208faeb4ac771, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 3
+  range: 3.5
   attackSpeed: 1
-  damage: 10
+  damage: 25
   isStunned: 0
   projectilePrefab: {fileID: 6440248248155827731, guid: 7e78d42e23df6544fa6fb8d06fe7ecea, type: 3}
-  projectileSpeed: 5
+  projectileSpeed: 3

@@ -97,7 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45ed85bab8a802c48bf66cf3d4e423f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 1.75
-  attackSpeed: 2
-  damage: 10
+  range: 2
+  attackSpeed: 2.5
+  damage: 20
   isStunned: 0
