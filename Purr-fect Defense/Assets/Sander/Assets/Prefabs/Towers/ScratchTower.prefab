@@ -98,6 +98,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   range: 1.75
-  attackSpeed: 1
+  attackSpeed: 2
   damage: 10
   isStunned: 0
