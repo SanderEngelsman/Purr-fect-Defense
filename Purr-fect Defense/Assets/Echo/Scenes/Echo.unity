@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 68655086}
   - component: {fileID: 68655085}
   m_Layer: 0
-  m_Name: Fox attack1
+  m_Name: Fox1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
