@@ -1,24 +1,47 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Tower : MonoBehaviour
+public abstract class Tower : MonoBehaviour
 {
     [SerializeField] protected float range = 3f;
-    [SerializeField] protected float attackSpeed = 1f; // Attacks per second
+    [SerializeField] protected float attackSpeed = 1f;
     [SerializeField] protected float damage = 10f;
     protected float attackTimer = 0f;
     protected GameObject target;
     public bool isStunned = false;
     protected float stunTimer = 0f;
+    private SpriteRenderer spriteRenderer;
+    private Color originalColor;
+
+    protected virtual void Start()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null)
+        {
+            originalColor = spriteRenderer.color;
+        }
+        else
+        {
+            Debug.LogWarning($"SpriteRenderer missing on {gameObject.name}. Stun visual effect will not work.", this);
+        }
+    }
 
     protected virtual void Update()
     {
         if (isStunned)
         {
+            if (spriteRenderer != null)
+            {
+                spriteRenderer.color = Color.blue; // Stun indication
+            }
             stunTimer -= Time.deltaTime;
             if (stunTimer <= 0)
+            {
                 isStunned = false;
+                if (spriteRenderer != null)
+                {
+                    spriteRenderer.color = originalColor; // Revert color
+                }
+            }
             return;
         }
 
@@ -29,43 +52,15 @@ public class Tower : MonoBehaviour
         }
     }
 
-    protected virtual void FindTarget()
-    {
-        target = null;
-        float closestDistance = range;
-        foreach (var enemy in FindObjectsOfType<Enemy>())
-        {
-            float distance = Vector3.Distance(transform.position, enemy.transform.position);
-            if (distance <= range && IsValidTarget(enemy))
-            {
-                if (distance < closestDistance)
-                {
-                    closestDistance = distance;
-                    target = enemy.gameObject;
-                }
-            }
-        }
-    }
+    protected abstract void FindTarget();
+
+    protected abstract bool CanAttack();
+
+    protected abstract void Attack();
 
     protected virtual bool IsValidTarget(Enemy enemy)
     {
-        return true; // Override in derived classes
-    }
-
-    protected virtual bool CanAttack()
-    {
-        attackTimer += Time.deltaTime;
-        if (attackTimer >= 1f / attackSpeed)
-        {
-            attackTimer = 0f;
-            return true;
-        }
-        return false;
-    }
-
-    protected virtual void Attack()
-    {
-        // Implemented in derived classes
+        return true;
     }
 
     public void Stun(float duration)

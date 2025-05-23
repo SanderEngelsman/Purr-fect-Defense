@@ -104,6 +104,8 @@ MonoBehaviour:
   shieldAttackRange: 0.5
   shieldAttackDamage: 10
   shieldAttackInterval: 1
+  stunProjectilePrefab: {fileID: 4915182185116532304, guid: cf7c049e359760548a6fe286e0a0a5c9, type: 3}
   stunRange: 2
-  stunDuration: 3
-  stunInterval: 10
+  stunDuration: 5
+  stunInterval: 1
+  projectileSpeed: 5

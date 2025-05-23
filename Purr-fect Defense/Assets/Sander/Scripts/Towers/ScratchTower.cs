@@ -5,22 +5,49 @@ using static UnityEngine.GraphicsBuffer;
 
 public class ScratchTower : Tower
 {
-    protected void Start()
+    protected override void FindTarget()
     {
-        // Removed base.Start() as Tower.cs has no Start method
+        target = null;
+        float closestDistance = range;
+        foreach (var enemy in FindObjectsOfType<Enemy>())
+        {
+            float distance = Vector3.Distance(transform.position, enemy.transform.position);
+            if (distance <= range && IsValidTarget(enemy))
+            {
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    target = enemy.gameObject;
+                }
+            }
+        }
     }
 
-    protected override bool IsValidTarget(Enemy enemy)
+    protected override bool CanAttack()
     {
-        return !enemy.isFlying; // Only target ground enemies
+        attackTimer += Time.deltaTime;
+        if (attackTimer >= 1f / attackSpeed)
+        {
+            attackTimer = 0f;
+            return true;
+        }
+        return false;
     }
 
     protected override void Attack()
     {
-        Enemy enemy = target.GetComponent<Enemy>();
-        if (enemy != null)
+        if (target != null)
         {
-            enemy.TakeDamage(damage);
+            Enemy enemy = target.GetComponent<Enemy>();
+            if (enemy != null)
+            {
+                enemy.TakeDamage(damage);
+            }
         }
+    }
+
+    protected override bool IsValidTarget(Enemy enemy)
+    {
+        return !enemy.isFlying; // Only target non-flying enemies
     }
 }

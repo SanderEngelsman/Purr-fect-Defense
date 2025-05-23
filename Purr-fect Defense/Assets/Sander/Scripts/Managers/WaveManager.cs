@@ -7,24 +7,34 @@ public struct Wave
 {
     public GameObject[] enemies; // Enemies to spawn in order
 }
+
 public class WaveManager : MonoBehaviour
 {
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private float timeBetweenWaves = 30f;
-    [SerializeField] private Wave[] waves; // Configurable in Inspector
-
+    [SerializeField] private Wave[] waves;
     public int currentWave = 0;
+    private bool isPreGame = true;
 
-    private void Start()
+    public bool IsPreGame => isPreGame;
+
+    public void StartFirstWave()
     {
-        StartCoroutine(StartWave());
+        if (isPreGame)
+        {
+            isPreGame = false;
+            StartCoroutine(StartWave());
+        }
     }
 
     private IEnumerator StartWave()
     {
         while (currentWave < waves.Length)
         {
-            yield return new WaitForSeconds(timeBetweenWaves);
+            if (currentWave > 0) // Skip delay for first wave after pre-game
+            {
+                yield return new WaitForSeconds(timeBetweenWaves);
+            }
             Wave wave = waves[currentWave];
             for (int i = 0; i < wave.enemies.Length; i++)
             {

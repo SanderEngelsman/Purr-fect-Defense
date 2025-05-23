@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class StunEnemy : Enemy
 {
+    [SerializeField] private GameObject stunProjectilePrefab;
     [SerializeField] private float stunRange = 2f;
-    [SerializeField] private float stunDuration = 3f;
+    [SerializeField] private float stunDuration = 5f;
     [SerializeField] private float stunInterval = 10f;
+    [SerializeField] private float projectileSpeed = 5f;
     private float stunTimer = 0f;
 
     protected override void Update()
@@ -15,19 +17,33 @@ public class StunEnemy : Enemy
         stunTimer += Time.deltaTime;
         if (stunTimer >= stunInterval)
         {
-            StunTowers();
+            FireStunProjectile();
             stunTimer = 0f;
         }
     }
 
-    private void StunTowers()
+    private void FireStunProjectile()
     {
+        Tower target = null;
+        float closestDistance = stunRange;
         foreach (var tower in FindObjectsOfType<Tower>())
         {
-            if (Vector3.Distance(transform.position, tower.transform.position) <= stunRange)
+            if (tower.GetComponent<ShieldTower>() == null) // Exclude ShieldTower
             {
-                tower.Stun(stunDuration);
+                float distance = Vector3.Distance(transform.position, tower.transform.position);
+                if (distance <= stunRange && distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    target = tower;
+                }
             }
+        }
+
+        if (target != null)
+        {
+            GameObject projectile = Instantiate(stunProjectilePrefab, transform.position, Quaternion.identity);
+            StunProjectile projScript = projectile.GetComponent<StunProjectile>();
+            projScript.SetTarget(target, stunDuration);
         }
     }
 }

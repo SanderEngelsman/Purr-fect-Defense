@@ -7,10 +7,13 @@ public class GeneratorTower : Tower
     [SerializeField] private float currencyPerSecond = 2f;
     private GameManager gameManager;
     private float currencyTimer = 0f;
+    private WaveManager waveManager;
 
-    protected void Start()
+    protected override void Start()
     {
+        base.Start();
         gameManager = FindObjectOfType<GameManager>();
+        waveManager = FindObjectOfType<WaveManager>();
     }
 
     protected override void Update()
@@ -23,6 +26,9 @@ public class GeneratorTower : Tower
             return;
         }
 
+        if (waveManager.IsPreGame)
+            return;
+
         currencyTimer += Time.deltaTime;
         if (currencyTimer >= 1f)
         {
@@ -34,6 +40,7 @@ public class GeneratorTower : Tower
     protected override void FindTarget()
     {
         // No targeting needed
+        target = null;
     }
 
     protected override bool CanAttack()
