@@ -101,4 +101,4 @@ MonoBehaviour:
   attackSpeed: 0
   damage: 0
   isStunned: 0
-  currencyPerSecond: 2
+  currencyPerSecond: 4
