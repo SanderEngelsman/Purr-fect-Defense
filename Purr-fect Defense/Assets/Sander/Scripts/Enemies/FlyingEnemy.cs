@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class FlyingEnemy : Enemy
 {
-    protected override void Start()
+    public override void Start()
     {
         base.Start();
-        isFlying = true; // Ensure flying status
+        isFlying = true;
     }
 }

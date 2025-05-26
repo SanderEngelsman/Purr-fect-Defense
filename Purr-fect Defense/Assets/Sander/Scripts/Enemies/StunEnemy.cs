@@ -11,7 +11,7 @@ public class StunEnemy : Enemy
     [SerializeField] private float projectileSpeed = 5f;
     private float stunTimer = 0f;
 
-    protected override void Update()
+    public override void Update()
     {
         base.Update();
         stunTimer += Time.deltaTime;
@@ -24,7 +24,7 @@ public class StunEnemy : Enemy
 
     private void FireStunProjectile()
     {
-        Tower target = null;
+        Tower targetTower = null;
         float closestDistance = stunRange;
         foreach (var tower in FindObjectsOfType<Tower>())
         {
@@ -34,16 +34,16 @@ public class StunEnemy : Enemy
                 if (distance <= stunRange && distance < closestDistance)
                 {
                     closestDistance = distance;
-                    target = tower;
+                    targetTower = tower;
                 }
             }
         }
 
-        if (target != null)
+        if (targetTower != null)
         {
             GameObject projectile = Instantiate(stunProjectilePrefab, transform.position, Quaternion.identity);
             StunProjectile projScript = projectile.GetComponent<StunProjectile>();
-            projScript.SetTarget(target, stunDuration);
+            projScript.SetTarget(targetTower, stunDuration);
         }
     }
 }

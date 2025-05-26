@@ -8,7 +8,7 @@ public class ProjectileTower : Tower
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private float projectileSpeed = 10f;
 
-    protected override void FindTarget()
+    public override void FindTarget()
     {
         target = null;
         float closestDistance = range;
@@ -26,7 +26,7 @@ public class ProjectileTower : Tower
         }
     }
 
-    protected override bool CanAttack()
+    public override bool CanAttack()
     {
         attackTimer += Time.deltaTime;
         if (attackTimer >= 1f / attackSpeed)
@@ -37,7 +37,7 @@ public class ProjectileTower : Tower
         return false;
     }
 
-    protected override void Attack()
+    public override void Attack()
     {
         if (target != null)
         {

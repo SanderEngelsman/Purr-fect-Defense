@@ -5,29 +5,29 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] protected float maxHealth = 100f;
-    [SerializeField] protected float speed = 2f;
+   [SerializeField] public float maxHealth = 100f;
+    [SerializeField] public float speed = 2f;
     [SerializeField] public bool isFlying = false;
-    [SerializeField] protected float currencyValue = 10f;
-    [SerializeField] protected float shieldAttackRange = 0.5f;
-    [SerializeField] protected float shieldAttackDamage = 10f;
-    [SerializeField] protected float shieldAttackInterval = 1f;
-    protected float health;
-    protected Path path;
-    protected int currentWaypointIndex = 0;
-    protected GameManager gameManager;
-    protected ShieldTower shieldTarget;
-    protected float shieldAttackTimer = 0f;
-    protected bool isAttackingBase = false;
+    [SerializeField] public float currencyValue = 10f;
+    [SerializeField] public float shieldAttackRange = 0.5f;
+    [SerializeField] public float shieldAttackDamage = 10f;
+    [SerializeField] public float shieldAttackInterval = 1f;
+    public float health;
+    public Path path;
+    public int currentWaypointIndex = 0;
+    public GameManager gameManager;
+    public ShieldTower shieldTarget;
+    public float shieldAttackTimer = 0f;
+    public bool isAttackingBase = false;
 
-    protected virtual void Start()
+    public virtual void Start()
     {
         health = maxHealth;
         path = FindObjectOfType<Path>();
         gameManager = FindObjectOfType<GameManager>();
     }
 
-    protected virtual void Update()
+    public virtual void Update()
     {
         if (isAttackingBase)
         {
@@ -43,7 +43,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    protected void Move()
+    public void Move()
     {
         if (currentWaypointIndex >= path.GetWaypointCount())
         {
@@ -51,15 +51,14 @@ public class Enemy : MonoBehaviour
             return;
         }
 
-        Vector3 target = path.GetWaypoint(currentWaypointIndex);
-        transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
+        Vector3 targetPos = path.GetWaypoint(currentWaypointIndex);
+        transform.position = Vector3.MoveTowards(transform.position, targetPos, speed * Time.deltaTime);
 
-        if (Vector3.Distance(transform.position, target) < 0.1f)
+        if (Vector3.Distance(transform.position, targetPos) < 0.1f)
         {
             currentWaypointIndex++;
         }
 
-        // Check for ShieldTower in range
         if (!isFlying)
         {
             foreach (var shield in FindObjectsOfType<ShieldTower>())
@@ -73,7 +72,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    protected void AttackShield()
+    public void AttackShield()
     {
         if (shieldTarget == null)
         {
@@ -89,7 +88,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    protected void AttackBase()
+    public void AttackBase()
     {
         shieldAttackTimer += Time.deltaTime;
         if (shieldAttackTimer >= shieldAttackInterval)
@@ -108,14 +107,16 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    protected virtual void Die()
+    public virtual void Die()
     {
         gameManager.AddCurrency(currencyValue);
         Destroy(gameObject);
     }
 
-    protected virtual void ReachEnd()
+    public virtual void ReachEnd()
     {
         // No longer used
     }
+
+    public float Health => health;
 }

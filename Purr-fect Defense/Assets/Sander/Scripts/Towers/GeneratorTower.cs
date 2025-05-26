@@ -9,14 +9,14 @@ public class GeneratorTower : Tower
     private float currencyTimer = 0f;
     private WaveManager waveManager;
 
-    protected override void Start()
+    public override void Start()
     {
         base.Start();
         gameManager = FindObjectOfType<GameManager>();
         waveManager = FindObjectOfType<WaveManager>();
     }
 
-    protected override void Update()
+    public override void Update()
     {
         if (isStunned)
         {
@@ -37,18 +37,17 @@ public class GeneratorTower : Tower
         }
     }
 
-    protected override void FindTarget()
+    public override void FindTarget()
     {
-        // No targeting needed
-        target = null;
+        target = null; // No targeting needed
     }
 
-    protected override bool CanAttack()
+    public override bool CanAttack()
     {
         return false; // No attacks
     }
 
-    protected override void Attack()
+    public override void Attack()
     {
         // No attacks
     }

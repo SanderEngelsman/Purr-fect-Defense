@@ -2,17 +2,17 @@ using UnityEngine;
 
 public abstract class Tower : MonoBehaviour
 {
-    [SerializeField] protected float range = 3f;
-    [SerializeField] protected float attackSpeed = 1f;
-    [SerializeField] protected float damage = 10f;
-    protected float attackTimer = 0f;
-    protected GameObject target;
+    [SerializeField] public float range = 3f;
+    [SerializeField] public float attackSpeed = 1f;
+    [SerializeField] public float damage = 10f;
+    public float attackTimer = 0f;
+    public GameObject target;
     public bool isStunned = false;
-    protected float stunTimer = 0f;
+    public float stunTimer = 0f;
     private SpriteRenderer spriteRenderer;
     private Color originalColor;
 
-    protected virtual void Start()
+    public virtual void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer != null)
@@ -25,7 +25,7 @@ public abstract class Tower : MonoBehaviour
         }
     }
 
-    protected virtual void Update()
+    public virtual void Update()
     {
         if (isStunned)
         {
@@ -52,13 +52,29 @@ public abstract class Tower : MonoBehaviour
         }
     }
 
-    protected abstract void FindTarget();
+    public virtual void FindTarget()
+    {
+        target = null;
+        // Default: No targeting
+    }
 
-    protected abstract bool CanAttack();
+    public virtual bool CanAttack()
+    {
+        attackTimer += Time.deltaTime;
+        if (attackTimer >= 1f / attackSpeed)
+        {
+            attackTimer = 0f;
+            return true;
+        }
+        return false;
+    }
 
-    protected abstract void Attack();
+    public virtual void Attack()
+    {
+        // Default: No attack
+    }
 
-    protected virtual bool IsValidTarget(Enemy enemy)
+    public virtual bool IsValidTarget(Enemy enemy)
     {
         return true;
     }
