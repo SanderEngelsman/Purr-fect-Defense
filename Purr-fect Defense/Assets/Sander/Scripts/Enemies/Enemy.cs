@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -17,6 +18,7 @@ public class Enemy : MonoBehaviour
     protected GameManager gameManager;
     protected ShieldTower shieldTarget;
     protected float shieldAttackTimer = 0f;
+    protected bool isAttackingBase = false;
 
     protected virtual void Start()
     {
@@ -27,7 +29,11 @@ public class Enemy : MonoBehaviour
 
     protected virtual void Update()
     {
-        if (shieldTarget != null && !isFlying)
+        if (isAttackingBase)
+        {
+            AttackBase();
+        }
+        else if (shieldTarget != null && !isFlying)
         {
             AttackShield();
         }
@@ -41,7 +47,7 @@ public class Enemy : MonoBehaviour
     {
         if (currentWaypointIndex >= path.GetWaypointCount())
         {
-            ReachEnd();
+            isAttackingBase = true;
             return;
         }
 
@@ -83,6 +89,16 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    protected void AttackBase()
+    {
+        shieldAttackTimer += Time.deltaTime;
+        if (shieldAttackTimer >= shieldAttackInterval)
+        {
+            gameManager.TakeBaseDamage(shieldAttackDamage);
+            shieldAttackTimer = 0f;
+        }
+    }
+
     public virtual void TakeDamage(float damage)
     {
         health -= damage;
@@ -100,7 +116,6 @@ public class Enemy : MonoBehaviour
 
     protected virtual void ReachEnd()
     {
-        gameManager.TakeBaseDamage(shieldAttackDamage);
-        Destroy(gameObject);
+        // No longer used
     }
 }
