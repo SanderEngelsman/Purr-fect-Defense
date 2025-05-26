@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-   [SerializeField] public float maxHealth = 100f;
+    [SerializeField] public float maxHealth = 100f;
     [SerializeField] public float speed = 2f;
     [SerializeField] public bool isFlying = false;
     [SerializeField] public float currencyValue = 10f;
@@ -19,12 +19,14 @@ public class Enemy : MonoBehaviour
     public ShieldTower shieldTarget;
     public float shieldAttackTimer = 0f;
     public bool isAttackingBase = false;
+    private EnemyHealthBar healthBar;
 
     public virtual void Start()
     {
         health = maxHealth;
         path = FindObjectOfType<Path>();
         gameManager = FindObjectOfType<GameManager>();
+        healthBar = GetComponent<EnemyHealthBar>();
     }
 
     public virtual void Update()
@@ -101,6 +103,10 @@ public class Enemy : MonoBehaviour
     public virtual void TakeDamage(float damage)
     {
         health -= damage;
+        if (healthBar != null)
+        {
+            healthBar.ShowHealthBar();
+        }
         if (health <= 0)
         {
             Die();

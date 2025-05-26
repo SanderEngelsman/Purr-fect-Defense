@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7949390619153413065}
   - component: {fileID: 201780176366103359}
   - component: {fileID: 3923107657496082653}
+  - component: {fileID: -8896418554827730841}
   m_Layer: 0
   m_Name: StunEnemy
   m_TagString: Untagged
@@ -104,8 +105,34 @@ MonoBehaviour:
   shieldAttackRange: 0.5
   shieldAttackDamage: 10
   shieldAttackInterval: 1
+  health: 0
+  path: {fileID: 0}
+  currentWaypointIndex: 0
+  gameManager: {fileID: 0}
+  shieldTarget: {fileID: 0}
+  shieldAttackTimer: 0
+  isAttackingBase: 0
   stunProjectilePrefab: {fileID: 4915182185116532304, guid: cf7c049e359760548a6fe286e0a0a5c9, type: 3}
   stunRange: 3
   stunDuration: 4
   stunInterval: 7.5
   projectileSpeed: 5
+--- !u!114 &-8896418554827730841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5136582293965461582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1e3a9fdbd32ed647a55e2b89c869659, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  worldOffset: 1
+  screenOffset: 5
+  healthColor: {r: 0.2, g: 0.8, b: 0.2, a: 1}
+  damageColor: {r: 0.8, g: 0.2, b: 0.2, a: 1}
+  outlineColor: {r: 0, g: 0, b: 0, a: 1}
+  healthbarWidth: 100
+  healthbarHeight: 10

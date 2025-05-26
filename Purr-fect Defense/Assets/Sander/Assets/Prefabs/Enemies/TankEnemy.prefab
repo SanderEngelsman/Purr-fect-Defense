@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3732517079022561612}
   - component: {fileID: 6651848809567076399}
   - component: {fileID: 452059864830705152}
+  - component: {fileID: -6907880744957379330}
   m_Layer: 0
   m_Name: TankEnemy
   m_TagString: Untagged
@@ -104,3 +105,29 @@ MonoBehaviour:
   shieldAttackRange: 0.5
   shieldAttackDamage: 10
   shieldAttackInterval: 1
+  health: 0
+  path: {fileID: 0}
+  currentWaypointIndex: 0
+  gameManager: {fileID: 0}
+  shieldTarget: {fileID: 0}
+  shieldAttackTimer: 0
+  isAttackingBase: 0
+--- !u!114 &-6907880744957379330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4624401258798809816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1e3a9fdbd32ed647a55e2b89c869659, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  worldOffset: 1
+  screenOffset: 5
+  healthColor: {r: 0.2, g: 0.8, b: 0.2, a: 1}
+  damageColor: {r: 0.8, g: 0.2, b: 0.2, a: 1}
+  outlineColor: {r: 0, g: 0, b: 0, a: 1}
+  healthbarWidth: 100
+  healthbarHeight: 10

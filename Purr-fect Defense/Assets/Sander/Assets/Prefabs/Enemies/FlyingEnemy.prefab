@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 906447199004228194}
   - component: {fileID: 750263489052065148}
   - component: {fileID: 4474841575084667263}
+  - component: {fileID: 7523768168394287532}
   m_Layer: 0
   m_Name: FlyingEnemy
   m_TagString: Untagged
@@ -104,3 +105,29 @@ MonoBehaviour:
   shieldAttackRange: 0.5
   shieldAttackDamage: 10
   shieldAttackInterval: 1
+  health: 0
+  path: {fileID: 0}
+  currentWaypointIndex: 0
+  gameManager: {fileID: 0}
+  shieldTarget: {fileID: 0}
+  shieldAttackTimer: 0
+  isAttackingBase: 0
+--- !u!114 &7523768168394287532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3422071319490792281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1e3a9fdbd32ed647a55e2b89c869659, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  worldOffset: 1
+  screenOffset: 5
+  healthColor: {r: 0.2, g: 0.8, b: 0.2, a: 1}
+  damageColor: {r: 0.8, g: 0.2, b: 0.2, a: 1}
+  outlineColor: {r: 0, g: 0, b: 0, a: 1}
+  healthbarWidth: 100
+  healthbarHeight: 10
