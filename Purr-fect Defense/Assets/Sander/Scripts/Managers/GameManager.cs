@@ -7,9 +7,8 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private float startingCurrency = 100f;
     [SerializeField] private float startingBaseHealth = 100f;
-    [SerializeField] private TextMeshProUGUI currencyText;
-    [SerializeField] private TextMeshProUGUI baseHealthText;
-
+    [SerializeField] private TextMeshProUGUI currencyLabel;
+    [SerializeField] private TextMeshProUGUI baseHealthLabel;
     private float currency;
     private float baseHealth;
 
@@ -17,42 +16,56 @@ public class GameManager : MonoBehaviour
     {
         currency = startingCurrency;
         baseHealth = startingBaseHealth;
-        UpdateUI();
+        UpdateCurrencyLabel();
+        UpdateBaseHealthLabel();
     }
 
     public void AddCurrency(float amount)
     {
         currency += amount;
-        UpdateUI();
+        UpdateCurrencyLabel();
     }
 
-    public bool SpendCurrency(float amount)
+    public bool RemoveCurrency(float amount)
     {
         if (currency >= amount)
         {
             currency -= amount;
-            UpdateUI();
+            UpdateCurrencyLabel();
             return true;
         }
         return false;
     }
 
+    public bool HasEnoughCurrency(float amount)
+    {
+        return currency >= amount;
+    }
+
     public void TakeBaseDamage(float damage)
     {
         baseHealth -= damage;
-        UpdateUI();
+        UpdateBaseHealthLabel();
         if (baseHealth <= 0)
         {
             GameOver();
         }
     }
 
-    private void UpdateUI()
+    private void UpdateCurrencyLabel()
     {
-        if (currencyText != null)
-            currencyText.text = "Currency: " + currency.ToString("F0");
-        if (baseHealthText != null)
-            baseHealthText.text = "Base Health: " + baseHealth.ToString("F0");
+        if (currencyLabel != null)
+        {
+            currencyLabel.text = $"Currency: {currency}";
+        }
+    }
+
+    private void UpdateBaseHealthLabel()
+    {
+        if (baseHealthLabel != null)
+        {
+            baseHealthLabel.text = $"Base Health: {baseHealth}";
+        }
     }
 
     private void GameOver()

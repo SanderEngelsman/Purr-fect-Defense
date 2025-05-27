@@ -7,10 +7,12 @@ public class TilemapManager : MonoBehaviour
 {
     public Tilemap placementTilemap;
     public Tilemap pathTilemap;
-    public GameObject towerToPlace;
+    private GameObject towerToPlace;
+    private float towerCost;
     private Dictionary<Vector3Int, GameObject> placedTowers = new Dictionary<Vector3Int, GameObject>();
     private GameObject previewTower;
     private Vector3Int lastHighlightedCell;
+    private GameManager gameManager;
 
     private void OnValidate()
     {
@@ -20,12 +22,25 @@ public class TilemapManager : MonoBehaviour
             Debug.LogWarning("PathTilemap is not assigned in TilemapManager.", this);
     }
 
-    public void StartPlacingTower(GameObject towerPrefab)
+    private void Start()
     {
+        gameManager = FindObjectOfType<GameManager>();
+    }
+
+    public void StartPlacingTower(GameObject towerPrefab, float cost)
+    {
+        CancelPlacement(); // Clear any existing selection
         towerToPlace = towerPrefab;
+        towerCost = cost;
         if (towerToPlace != null)
         {
             previewTower = Instantiate(towerToPlace, Vector3.zero, Quaternion.identity);
+            // Disable tower scripts to prevent attacking or obstruction
+            MonoBehaviour[] scripts = previewTower.GetComponents<MonoBehaviour>();
+            foreach (var script in scripts)
+            {
+                script.enabled = false;
+            }
             SpriteRenderer renderer = previewTower.GetComponent<SpriteRenderer>();
             if (renderer != null)
             {
@@ -44,6 +59,7 @@ public class TilemapManager : MonoBehaviour
         {
             ClearPreview();
             towerToPlace = null;
+            towerCost = 0f;
         }
     }
 
@@ -66,7 +82,7 @@ public class TilemapManager : MonoBehaviour
 
             // Highlight tile
             ClearHighlight();
-            bool canPlace = targetTilemap != null && targetTilemap.HasTile(cellPos) && !placedTowers.ContainsKey(cellPos);
+            bool canPlace = targetTilemap != null && targetTilemap.HasTile(cellPos) && !placedTowers.ContainsKey(cellPos) && gameManager.HasEnoughCurrency(towerCost);
             if (isShieldTower)
             {
                 // For ShieldTower, allow placement even if PlacementTilemap has a tile
@@ -89,7 +105,8 @@ public class TilemapManager : MonoBehaviour
                 Debug.Log($"Cannot place {towerToPlace.name} at {cellPos} (World: {worldPos}). " +
                           $"Target tilemap ({targetTilemap?.name}): HasTile={targetTilemap?.HasTile(cellPos)}, " +
                           $"Other tilemap ({otherTilemap?.name}): HasTile={otherTilemap != null && otherTilemap.HasTile(cellPos)}, " +
-                          $"Tile occupied: {placedTowers.ContainsKey(cellPos)}");
+                          $"Tile occupied: {placedTowers.ContainsKey(cellPos)}, " +
+                          $"Sufficient currency: {gameManager.HasEnoughCurrency(towerCost)}");
             }
 
             // Place tower
@@ -98,9 +115,11 @@ public class TilemapManager : MonoBehaviour
                 if (canPlace)
                 {
                     GameObject tower = Instantiate(towerToPlace, targetTilemap.GetCellCenterWorld(cellPos), Quaternion.identity);
+                    gameManager.RemoveCurrency(towerCost); // Deduct currency
                     placedTowers.Add(cellPos, tower);
                     ClearPreview();
                     towerToPlace = null;
+                    towerCost = 0f;
                 }
                 else
                 {
