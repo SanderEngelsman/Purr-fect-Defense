@@ -11,6 +11,7 @@ public class TilemapManager : MonoBehaviour
     private float towerCost;
     private Dictionary<Vector3Int, GameObject> placedTowers = new Dictionary<Vector3Int, GameObject>();
     private GameObject previewTower;
+    private RangeVisualizer previewRangeVisualizer;
     private Vector3Int lastHighlightedCell;
     private GameManager gameManager;
 
@@ -50,6 +51,14 @@ public class TilemapManager : MonoBehaviour
             {
                 Debug.LogWarning($"Preview tower {towerPrefab.name} is missing SpriteRenderer.", towerPrefab);
             }
+            // Add range visualizer for attacking towers
+            Tower tower = previewTower.GetComponent<Tower>();
+            if (tower != null && CanAttack(tower))
+            {
+                previewRangeVisualizer = previewTower.AddComponent<RangeVisualizer>();
+                previewRangeVisualizer.SetRange(tower.range);
+                previewRangeVisualizer.Show();
+            }
         }
     }
 
@@ -61,6 +70,11 @@ public class TilemapManager : MonoBehaviour
             towerToPlace = null;
             towerCost = 0f;
         }
+    }
+
+    public bool IsPlacingTower()
+    {
+        return towerToPlace != null;
     }
 
     private void Update()
@@ -141,6 +155,7 @@ public class TilemapManager : MonoBehaviour
         {
             Destroy(previewTower);
             previewTower = null;
+            previewRangeVisualizer = null;
         }
         ClearHighlight();
     }
@@ -162,5 +177,11 @@ public class TilemapManager : MonoBehaviour
     public void RemoveTower(Vector3Int cellPos)
     {
         placedTowers.Remove(cellPos);
+    }
+
+    private bool CanAttack(Tower tower)
+    {
+        // Exclude GeneratorTower and ShieldTower
+        return tower is ProjectileTower || tower is ScratchTower;
     }
 }
