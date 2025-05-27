@@ -423,7 +423,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   placementTilemap: {fileID: 1491398645}
   pathTilemap: {fileID: 966913039}
-  towerToPlace: {fileID: 0}
 --- !u!4 &62586835
 Transform:
   m_ObjectHideFlags: 0
@@ -504,7 +503,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e67e6a8733dbcb34f909dca5dafafed0, type: 2}
   - {fileID: 11400000, guid: de0b847fada1ffa4ab0a5ae773823f3c, type: 2}
   - {fileID: 11400000, guid: ad4632f53967fe04d8538e60b8e2e0ac, type: 2}
-  tilemapManager: {fileID: 62586834}
+  costLabels: []
 --- !u!4 &230558821
 Transform:
   m_ObjectHideFlags: 0
@@ -1420,8 +1419,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startingCurrency: 100
   startingBaseHealth: 100
-  currencyText: {fileID: 15796849}
-  baseHealthText: {fileID: 1398716017}
+  currencyLabel: {fileID: 15796849}
+  baseHealthLabel: {fileID: 1398716017}
 --- !u!4 &777350999
 Transform:
   m_ObjectHideFlags: 0
