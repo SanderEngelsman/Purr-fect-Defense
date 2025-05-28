@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 201780176366103359}
   - component: {fileID: 3923107657496082653}
   - component: {fileID: -8896418554827730841}
+  - component: {fileID: -1434944213273624722}
   m_Layer: 0
   m_Name: StunEnemy
   m_TagString: Untagged
@@ -29,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.32315177, y: 0.039965417, z: 0.038236983}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -75,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 0d649b713595b814bbac081c20812f3c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b891520025126044c913984358e014b9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -113,10 +114,10 @@ MonoBehaviour:
   shieldAttackTimer: 0
   isAttackingBase: 0
   stunProjectilePrefab: {fileID: 4915182185116532304, guid: cf7c049e359760548a6fe286e0a0a5c9, type: 3}
-  stunRange: 3
+  stunRange: 5
   stunDuration: 4
-  stunInterval: 7.5
-  projectileSpeed: 5
+  stunInterval: 4.5
+  projectileSpeed: 3
 --- !u!114 &-8896418554827730841
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136,3 +137,24 @@ MonoBehaviour:
   outlineColor: {r: 0, g: 0, b: 0, a: 1}
   healthbarWidth: 100
   healthbarHeight: 10
+--- !u!95 &-1434944213273624722
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5136582293965461582}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ab6d6a8054cb7be4e9ed7a85bd4f9df4, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
