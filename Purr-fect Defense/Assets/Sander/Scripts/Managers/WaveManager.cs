@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [System.Serializable]
 public struct Wave
@@ -13,10 +14,19 @@ public class WaveManager : MonoBehaviour
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private float timeBetweenWaves = 30f;
     [SerializeField] private Wave[] waves;
+    [SerializeField] private Button startWaveButton;
     public int currentWave = 0;
     private bool isPreGame = true;
 
     public bool IsPreGame => isPreGame;
+
+    private void OnValidate()
+    {
+        if (startWaveButton == null)
+        {
+            Debug.LogWarning("StartWaveButton is not assigned in WaveManager. Button will not be destroyed after starting the first wave.", this);
+        }
+    }
 
     public void StartFirstWave()
     {
@@ -24,6 +34,16 @@ public class WaveManager : MonoBehaviour
         {
             isPreGame = false;
             StartCoroutine(StartWave());
+            // Destroy the start wave button
+            if (startWaveButton != null)
+            {
+                Debug.Log("Destroying Start Wave button.", startWaveButton.gameObject);
+                Destroy(startWaveButton.gameObject);
+            }
+            else
+            {
+                Debug.LogWarning("StartWaveButton is null. Cannot destroy button.", this);
+            }
         }
     }
 
