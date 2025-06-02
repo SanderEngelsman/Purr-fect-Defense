@@ -501,17 +501,17 @@ MonoBehaviour:
   towers:
   - towerPrefab: {fileID: 8022348688578148299, guid: b6a1fe495d5c4bc4bac1435e4cd9f03a, type: 3}
     cost: 100
+    resellPrice: 25
   - towerPrefab: {fileID: 6915509743750913567, guid: 348d1461542cca2428da3903618916d1, type: 3}
     cost: 75
+    resellPrice: 15
   - towerPrefab: {fileID: 3460794974277552391, guid: ff90f031c520eae429c417242972d73b, type: 3}
     cost: 75
+    resellPrice: 15
   - towerPrefab: {fileID: 3189044561415197850, guid: 0a2df9e00c8bccb4fbe014f1dbd043ab, type: 3}
     cost: 200
-  costLabels:
-  - {fileID: 442154596}
-  - {fileID: 292759952}
-  - {fileID: 445087263}
-  - {fileID: 585197236}
+    resellPrice: 50
+  costLabels: []
   shopButton: {fileID: 403390820}
   shopPanel: {fileID: 609062310}
   towerButtons:

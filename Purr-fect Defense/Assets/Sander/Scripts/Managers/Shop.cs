@@ -7,6 +7,7 @@ public struct ShopTowerData
 {
     public GameObject towerPrefab;
     public float cost;
+    public float resellPrice;
 }
 
 public class Shop : MonoBehaviour

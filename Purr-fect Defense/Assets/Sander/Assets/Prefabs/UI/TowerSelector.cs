@@ -201,7 +201,7 @@ public class TowerSelector : MonoBehaviour
     {
         if (shop == null || shop.Towers == null)
         {
-            Debug.LogWarning("Shop or Towers array is null. Returning 0.", this);
+            Debug.LogWarning("Shop or Towers array is null. Returning 0 refund.", this);
             return 0f;
         }
 
@@ -210,10 +210,10 @@ public class TowerSelector : MonoBehaviour
         {
             if (shopTower.towerPrefab != null && shopTower.towerPrefab.name == towerName)
             {
-                return shopTower.cost * 0.75f; // 75% refund
+                return shopTower.resellPrice;
             }
         }
-        Debug.Log($"No matching tower found in Shop for: {towerName}. Returning 0 refund.");
+        Debug.LogWarning($"No matching tower found in Shop for {towerName}. Returning 0 refund.");
         return 0f;
     }
 

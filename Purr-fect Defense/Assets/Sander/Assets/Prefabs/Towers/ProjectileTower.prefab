@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   range: 3.5
-  attackSpeed: 1
+  attackSpeed: 0.6
   damage: 25
   attackTimer: 0
   target: {fileID: 0}
