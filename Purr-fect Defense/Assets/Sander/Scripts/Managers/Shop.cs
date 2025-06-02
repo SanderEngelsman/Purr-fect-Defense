@@ -16,6 +16,7 @@ public class Shop : MonoBehaviour
     [SerializeField] private Button shopButton;
     [SerializeField] private GameObject shopPanel;
     [SerializeField] private Button[] towerButtons;
+    public ShopTowerData[] Towers => towers; // Public getter
     private TilemapManager tilemapManager;
     private GameManager gameManager;
     private ShopPanelAnimator panelAnimator;
@@ -36,6 +37,10 @@ public class Shop : MonoBehaviour
         tilemapManager = FindObjectOfType<TilemapManager>();
         gameManager = FindObjectOfType<GameManager>();
         panelAnimator = shopPanel?.GetComponent<ShopPanelAnimator>();
+        if (tilemapManager == null)
+            Debug.LogWarning("TilemapManager not found in Shop.", this);
+        if (gameManager == null)
+            Debug.LogWarning("GameManager not found in Shop.", this);
         if (panelAnimator == null && shopPanel != null)
         {
             Debug.LogWarning("ShopPanel is missing ShopPanelAnimator component. Panel will not animate.", shopPanel);
@@ -72,20 +77,31 @@ public class Shop : MonoBehaviour
 
     public void SelectTower(int index)
     {
+        Debug.Log($"SelectTower called with index: {index}");
         if (index >= 0 && index < towers.Length)
         {
             ShopTowerData tower = towers[index];
-            if (gameManager.HasEnoughCurrency(tower.cost))
+            if (tower.towerPrefab == null)
             {
-                tilemapManager.StartPlacingTower(tower.towerPrefab, tower.cost);
-                if (isPanelOpen)
-                {
-                    ToggleShopPanel(); // Close panel after selection
-                }
+                Debug.LogWarning($"Tower prefab at index {index} is null in Shop.", this);
+                return;
             }
-            else
+            Debug.Log($"Attempting to place {tower.towerPrefab.name} with cost: {tower.cost}");
+            if (gameManager == null || !gameManager.HasEnoughCurrency(tower.cost))
             {
                 Debug.Log($"Not enough currency to place {tower.towerPrefab.name}. Cost: {tower.cost}");
+                return;
+            }
+            if (tilemapManager == null)
+            {
+                Debug.LogWarning("TilemapManager is null. Cannot start tower placement.", this);
+                return;
+            }
+            tilemapManager.StartPlacingTower(tower.towerPrefab, tower.cost);
+            Debug.Log($"Started placing {tower.towerPrefab.name}");
+            if (isPanelOpen)
+            {
+                ToggleShopPanel(); // Close panel after selection
             }
         }
         else
