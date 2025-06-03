@@ -18,23 +18,51 @@ public class EnemyHealthBar : MonoBehaviour
     [SerializeField] private float healthbarHeight = 10f;
 
     private Enemy enemy;
+    private ShieldTower shieldTower;
     private bool showHealthbar = false;
     private Camera mainCamera;
+    private float health;
+    private float maxHealth;
 
     private void Start()
     {
         mainCamera = Camera.main;
         enemy = GetComponent<Enemy>();
-        if (enemy == null)
+        shieldTower = GetComponent<ShieldTower>();
+
+        if (enemy == null && shieldTower == null)
         {
-            Debug.LogWarning($"Enemy component missing on {gameObject.name}. Health bar will not function.", this);
+            Debug.LogWarning($"Neither Enemy nor ShieldTower component found on {gameObject.name}. Health bar will not function.", this);
             enabled = false;
+            return;
+        }
+
+        // Initialize health and maxHealth
+        if (enemy != null)
+        {
+            health = enemy.health;
+            maxHealth = enemy.maxHealth;
+        }
+        else if (shieldTower != null)
+        {
+            health = shieldTower.health;
+            maxHealth = shieldTower.maxHealth;
         }
     }
 
     private void Update()
     {
-        if (showHealthbar && (enemy == null || enemy.Health <= 0))
+        // Update health value
+        if (enemy != null)
+        {
+            health = enemy.health;
+        }
+        else if (shieldTower != null)
+        {
+            health = shieldTower.health;
+        }
+
+        if (showHealthbar && (health <= 0 || (enemy == null && shieldTower == null)))
         {
             showHealthbar = false;
         }
@@ -47,7 +75,7 @@ public class EnemyHealthBar : MonoBehaviour
 
     private void OnGUI()
     {
-        if (!showHealthbar || enemy == null) return;
+        if (!showHealthbar || (enemy == null && shieldTower == null)) return;
 
         Texture2D damageTexture = new Texture2D(1, 1);
         damageTexture.SetPixel(0, 0, damageColor);
@@ -66,15 +94,12 @@ public class EnemyHealthBar : MonoBehaviour
         float healthbarX = screenPosition.x - healthbarWidth / 2;
         float healthbarY = Screen.height - screenPosition.y - healthbarHeight - screenOffset;
 
-        GUI.DrawTexture(new Rect(healthbarX - 4, healthbarY - 4, healthbarWidth + 8, healthbarHeight + 8), outlineTexture);
-        GUI.DrawTexture(new Rect(healthbarX - 4, healthbarY - 4, healthbarWidth + 8, 4), outlineTexture);
-        GUI.DrawTexture(new Rect(healthbarX - 4, healthbarY + healthbarHeight, healthbarWidth + 8, 4), outlineTexture);
-        GUI.DrawTexture(new Rect(healthbarX - 4, healthbarY - 4, 4, healthbarHeight + 8), outlineTexture);
-        GUI.DrawTexture(new Rect(healthbarX + healthbarWidth, healthbarY - 4, 4, healthbarHeight + 8), outlineTexture);
-
+        // Draw outline
+        GUI.DrawTexture(new Rect(healthbarX - 2, healthbarY - 2, healthbarWidth + 4, healthbarHeight + 4), outlineTexture);
+        // Draw damage background
         GUI.DrawTexture(new Rect(healthbarX, healthbarY, healthbarWidth, healthbarHeight), damageTexture);
-
-        float currentWidth = (enemy.Health / enemy.maxHealth) * healthbarWidth;
+        // Draw health foreground
+        float currentWidth = (health / maxHealth) * healthbarWidth;
         GUI.DrawTexture(new Rect(healthbarX, healthbarY, currentWidth, healthbarHeight), healthTexture);
 
         Destroy(damageTexture);

@@ -66,15 +66,18 @@ public class TowerSelector : MonoBehaviour
 
             if (hit.collider != null)
             {
-                Tower tower = hit.collider.GetComponent<Tower>();
-                if (tower != null && CanAttack(tower))
+                // Check for any tower type
+                if (hit.collider.GetComponent<Tower>() ||
+                    hit.collider.GetComponent<ShieldTower>() ||
+                    hit.collider.GetComponent<GeneratorTower>())
                 {
-                    Debug.Log($"Selected tower: {tower.gameObject.name}", tower.gameObject);
-                    SelectTower(tower.gameObject);
+                    GameObject tower = hit.collider.gameObject;
+                    Debug.Log($"Selected tower: {tower.name}", tower);
+                    SelectTower(tower);
                 }
                 else
                 {
-                    Debug.Log("Clicked non-attacking tower or other object. Deselecting.", hit.collider.gameObject);
+                    Debug.Log("Clicked non-tower object. Deselecting.", hit.collider.gameObject);
                     DeselectTower();
                 }
             }
@@ -98,7 +101,7 @@ public class TowerSelector : MonoBehaviour
     {
         if (selectedTower == tower)
         {
-            Debug.Log($"Tower {tower.name} already selected. Showing RangeVisualizer.", tower);
+            Debug.Log($"Tower {tower.name} already selected.", tower);
             if (rangeVisualizer != null)
             {
                 rangeVisualizer.Show();
@@ -108,18 +111,36 @@ public class TowerSelector : MonoBehaviour
 
         DeselectTower(); // Clear previous selection
         selectedTower = tower;
-        rangeVisualizer = tower.GetComponent<RangeVisualizer>();
-        if (rangeVisualizer == null)
+
+        // Add RangeVisualizer only for towers with Tower component and valid range
+        Tower towerComponent = tower.GetComponent<Tower>();
+        if (towerComponent != null && towerComponent.range > 0)
         {
-            rangeVisualizer = tower.AddComponent<RangeVisualizer>();
-            Debug.Log($"Added new RangeVisualizer to {tower.name}", tower);
+            rangeVisualizer = tower.GetComponent<RangeVisualizer>();
+            if (rangeVisualizer == null)
+            {
+                rangeVisualizer = tower.AddComponent<RangeVisualizer>();
+                Debug.Log($"Added new RangeVisualizer to {tower.name}", tower);
+            }
+            else
+            {
+                Debug.Log($"Reusing existing RangeVisualizer on {tower.name}", tower);
+            }
+            try
+            {
+                rangeVisualizer.SetRange(towerComponent.range);
+                rangeVisualizer.Show();
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogWarning($"Failed to set up RangeVisualizer for {tower.name}: {e.Message}", tower);
+                rangeVisualizer = null;
+            }
         }
         else
         {
-            Debug.Log($"Reusing existing RangeVisualizer on {tower.name}", tower);
+            Debug.Log($"No RangeVisualizer added for {tower.name} (no Tower component or range <= 0).", tower);
         }
-        rangeVisualizer.SetRange(tower.GetComponent<Tower>().range);
-        rangeVisualizer.Show();
 
         isSellConfirm = false;
         if (sellButton != null && sellButtonText != null)
@@ -166,6 +187,12 @@ public class TowerSelector : MonoBehaviour
         {
             // First click: Confirm state
             sellRefundAmount = CalculateRefund(selectedTower);
+            if (sellRefundAmount <= 0)
+            {
+                Debug.LogWarning($"Invalid refund amount ({sellRefundAmount}) for {selectedTower.name}. Cannot proceed with sell.", selectedTower);
+                DeselectTower();
+                return;
+            }
             if (sellButtonText != null)
             {
                 sellButtonText.text = $"Sell > {sellRefundAmount}";
@@ -177,23 +204,27 @@ public class TowerSelector : MonoBehaviour
                 sellButton.colors = colors;
             }
             isSellConfirm = true;
-            Debug.Log($"Sell confirm mode: Refund {sellRefundAmount}");
+            Debug.Log($"Sell confirm mode for {selectedTower.name}: Refund {sellRefundAmount}");
         }
         else
         {
             // Second click: Sell tower
             if (tilemapManager != null)
             {
-                Vector3Int tilePos = tilemapManager.placementTilemap.WorldToCell(selectedTower.transform.position);
+                // Use pathTilemap for ShieldTower, placementTilemap for others
+                Tilemap targetTilemap = selectedTower.GetComponent<ShieldTower>() != null ?
+                    tilemapManager.pathTilemap : tilemapManager.placementTilemap;
+                Vector3Int tilePos = targetTilemap.WorldToCell(selectedTower.transform.position);
                 tilemapManager.RemoveTower(tilePos);
             }
             if (gameManager != null)
             {
                 gameManager.AddCurrency(sellRefundAmount);
             }
+            string towerName = selectedTower.name;
             Destroy(selectedTower);
             DeselectTower();
-            Debug.Log($"Sold tower, refunded {sellRefundAmount}");
+            Debug.Log($"Sold tower {towerName}, refunded {sellRefundAmount}");
         }
     }
 
@@ -215,11 +246,5 @@ public class TowerSelector : MonoBehaviour
         }
         Debug.LogWarning($"No matching tower found in Shop for {towerName}. Returning 0 refund.");
         return 0f;
-    }
-
-    private bool CanAttack(Tower tower)
-    {
-        // Exclude GeneratorTower and ShieldTower
-        return tower is ProjectileTower || tower is ScratchTower;
     }
 }

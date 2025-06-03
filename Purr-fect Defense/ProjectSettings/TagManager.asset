@@ -38,12 +38,12 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
   - name: Placement
     uniqueID: 1422842601
     locked: 0
   - name: Path
     uniqueID: 3473139039
-    locked: 0
-  - name: Default
-    uniqueID: 0
     locked: 0

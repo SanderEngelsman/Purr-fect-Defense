@@ -19,6 +19,8 @@ public class RangeVisualizer : MonoBehaviour
         lineRenderer.endWidth = 0.1f;
         lineRenderer.positionCount = segments + 1;
         lineRenderer.useWorldSpace = true;
+        lineRenderer.sortingLayerName = "Towers";
+        lineRenderer.sortingOrder = 1; // Slightly above tower sprite
     }
 
     public void SetRange(float newRadius)
@@ -59,7 +61,7 @@ public class RangeVisualizer : MonoBehaviour
         if (lineRenderer != null)
         {
             lineRenderer.enabled = false;
-            Destroy(lineRenderer.material); // Clean up material
+            Destroy(lineRenderer.material);
         }
     }
 }

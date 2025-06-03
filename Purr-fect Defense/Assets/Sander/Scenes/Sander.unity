@@ -511,7 +511,11 @@ MonoBehaviour:
   - towerPrefab: {fileID: 3189044561415197850, guid: 0a2df9e00c8bccb4fbe014f1dbd043ab, type: 3}
     cost: 200
     resellPrice: 50
-  costLabels: []
+  costLabels:
+  - {fileID: 442154596}
+  - {fileID: 292759952}
+  - {fileID: 445087263}
+  - {fileID: 585197236}
   shopButton: {fileID: 403390820}
   shopPanel: {fileID: 609062310}
   towerButtons:
@@ -2466,7 +2470,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -821828257
-  m_SortingLayer: -1
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
@@ -4233,7 +4237,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1422842601
-  m_SortingLayer: -2
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
