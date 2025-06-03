@@ -20,6 +20,8 @@ public class Enemy : MonoBehaviour
     public float shieldAttackTimer = 0f;
     public bool isAttackingBase = false;
     private EnemyHealthBar healthBar;
+    private SpriteRenderer spriteRenderer;
+    private float previousX;
 
     public virtual void Start()
     {
@@ -27,6 +29,16 @@ public class Enemy : MonoBehaviour
         path = FindObjectOfType<Path>();
         gameManager = FindObjectOfType<GameManager>();
         healthBar = GetComponent<EnemyHealthBar>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        previousX = transform.position.x;
+        if (spriteRenderer != null)
+        {
+            Debug.Log($"Enemy {gameObject.name}: SpriteRenderer enabled={spriteRenderer.enabled}, sprite={(spriteRenderer.sprite != null ? spriteRenderer.sprite.name : "null")}, sortingLayer={spriteRenderer.sortingLayerName}, order={spriteRenderer.sortingOrder}, color={spriteRenderer.color}", this);
+        }
+        else
+        {
+            Debug.LogWarning($"Enemy {gameObject.name}: No SpriteRenderer found! Sprite flipping will not work.", this);
+        }
     }
 
     public virtual void Update()
@@ -56,7 +68,22 @@ public class Enemy : MonoBehaviour
         Vector3 targetPos = path.GetWaypoint(currentWaypointIndex);
         // Ignore waypoint Z to preserve ZLayering.cs control
         targetPos.z = transform.position.z;
+        float currentX = transform.position.x;
         transform.position = Vector3.MoveTowards(transform.position, targetPos, speed * Time.deltaTime);
+
+        // Flip sprite based on X movement direction
+        if (spriteRenderer != null)
+        {
+            float deltaX = transform.position.x - currentX;
+            if (deltaX < 0) // Moving left
+            {
+                spriteRenderer.flipX = true;
+            }
+            else if (deltaX > 0) // Moving right
+            {
+                spriteRenderer.flipX = false;
+            }
+        }
 
         if (Vector3.Distance(transform.position, targetPos) < 0.1f)
         {
