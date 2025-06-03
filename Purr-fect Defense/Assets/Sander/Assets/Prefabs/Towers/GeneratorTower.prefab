@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5836922797017162165}
   - component: {fileID: 5891192042406163777}
   - component: {fileID: -7474336564188022637}
+  - component: {fileID: 851328974317166827}
   m_Layer: 0
   m_Name: GeneratorTower
   m_TagString: Untagged
@@ -73,8 +74,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1422842601
-  m_SortingLayer: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: e0c38ef845f38734c9ca828a94c5cba6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -173,3 +174,15 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.5, y: 1.5}
   m_EdgeRadius: 0
+--- !u!114 &851328974317166827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3189044561415197850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 742634c5986fd0b4c96490f39a5cdad4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -54,6 +54,8 @@ public class Enemy : MonoBehaviour
         }
 
         Vector3 targetPos = path.GetWaypoint(currentWaypointIndex);
+        // Ignore waypoint Z to preserve ZLayering.cs control
+        targetPos.z = transform.position.z;
         transform.position = Vector3.MoveTowards(transform.position, targetPos, speed * Time.deltaTime);
 
         if (Vector3.Distance(transform.position, targetPos) < 0.1f)

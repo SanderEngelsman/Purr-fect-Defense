@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7359719726163271788}
   - component: {fileID: 5971498372228898191}
   - component: {fileID: 6188965375888776270}
+  - component: {fileID: -1758307388981452880}
   m_Layer: 0
   m_Name: FastEnemy
   m_TagString: Untagged
@@ -153,3 +154,15 @@ MonoBehaviour:
   outlineColor: {r: 0, g: 0, b: 0, a: 1}
   healthbarWidth: 100
   healthbarHeight: 10
+--- !u!114 &-1758307388981452880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2992963078866100631}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 742634c5986fd0b4c96490f39a5cdad4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

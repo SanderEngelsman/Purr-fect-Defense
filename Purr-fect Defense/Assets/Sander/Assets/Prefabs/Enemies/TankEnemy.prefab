@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6651848809567076399}
   - component: {fileID: 452059864830705152}
   - component: {fileID: -6907880744957379330}
+  - component: {fileID: -8576867046099302423}
   m_Layer: 0
   m_Name: TankEnemy
   m_TagString: Untagged
@@ -131,3 +132,15 @@ MonoBehaviour:
   outlineColor: {r: 0, g: 0, b: 0, a: 1}
   healthbarWidth: 100
   healthbarHeight: 10
+--- !u!114 &-8576867046099302423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4624401258798809816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 742634c5986fd0b4c96490f39a5cdad4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
