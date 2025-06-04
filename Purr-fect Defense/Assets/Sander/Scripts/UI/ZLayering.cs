@@ -1,22 +1,23 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ZLayering : MonoBehaviour
 {
     private Enemy enemy;
     private bool isStatic = false;
     private const float BASE_Y = 1.5f;
-    private const float FLYING_Z = -99f;
+    private const float FLYING_Z = -1000f;
+    private const float Z_OFFSET = 0.001f; // Small offset for X-axis order
+    private static int globalOrderCounter = 0; // Tracks placement/spawn order
+    [SerializeField] private int order; // Instance-specific order
 
     private void Start()
     {
         enemy = GetComponent<Enemy>();
-        // Towers are static, enemies are dynamic
         isStatic = GetComponent<Tower>() != null || GetComponent<ShieldTower>() != null;
-        if (enemy != null)
+        if (order == 0)
         {
-            Debug.Log($"ZLayering initialized on {gameObject.name}: isFlying={enemy.isFlying}", this);
+            order = ++globalOrderCounter;
+            Debug.Log($"ZLayering {gameObject.name}: Assigned order={order}, isFlying={(enemy != null ? enemy.isFlying.ToString() : "N/A")}", this);
         }
         if (isStatic)
         {
@@ -39,15 +40,22 @@ public class ZLayering : MonoBehaviour
 
         if (enemy != null && enemy.isFlying)
         {
-            zPos = FLYING_Z;
-            Debug.Log($"Flying enemy {gameObject.name}: Setting Z to {zPos} at Y={yPos}", this);
+            zPos = FLYING_Z; // Flying enemies always in front
         }
         else
         {
-            zPos = yPos - BASE_Y; // Higher Y → Higher Z (behind); Lower Y → Lower Z (in front)
-            // Debug.Log($"Updated {gameObject.name} Z to {zPos} at Y={yPos}", this);
+            float baseZ = yPos - BASE_Y; // Y-axis layering
+            float orderOffset = isStatic ? -order * Z_OFFSET : order * Z_OFFSET;
+            zPos = baseZ + orderOffset;
         }
 
         transform.position = new Vector3(transform.position.x, yPos, zPos);
+        // Debug.Log($"ZLayering {gameObject.name}: Z={zPos}, Y={yPos}, order={order}{(enemy != null && enemy.isFlying ? " (Flying)" : "")}", this);
+    }
+
+    public void SetOrder(int newOrder)
+    {
+        order = newOrder;
+        Debug.Log($"ZLayering {gameObject.name}: Set order={order}", this);
     }
 }

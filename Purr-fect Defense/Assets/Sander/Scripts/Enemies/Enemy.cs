@@ -22,6 +22,7 @@ public class Enemy : MonoBehaviour
     private EnemyHealthBar healthBar;
     private SpriteRenderer spriteRenderer;
     private float previousX;
+    private static int enemySpawnOrderCounter = 0; // Tracks enemy spawn order
 
     public virtual void Start()
     {
@@ -31,6 +32,12 @@ public class Enemy : MonoBehaviour
         healthBar = GetComponent<EnemyHealthBar>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         previousX = transform.position.x;
+        // Assign spawn order for layering
+        ZLayering zLayering = GetComponent<ZLayering>();
+        if (zLayering != null)
+        {
+            zLayering.SetOrder(++enemySpawnOrderCounter);
+        }
         if (spriteRenderer != null)
         {
             Debug.Log($"Enemy {gameObject.name}: SpriteRenderer enabled={spriteRenderer.enabled}, sprite={(spriteRenderer.sprite != null ? spriteRenderer.sprite.name : "null")}, sortingLayer={spriteRenderer.sortingLayerName}, order={spriteRenderer.sortingOrder}, color={spriteRenderer.color}", this);

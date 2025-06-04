@@ -14,6 +14,7 @@ public class TilemapManager : MonoBehaviour
     private RangeVisualizer previewRangeVisualizer;
     private Vector3Int lastHighlightedCell;
     private GameManager gameManager;
+    private static int towerOrderCounter = 0; // Tracks tower placement order
 
     private void OnValidate()
     {
@@ -129,6 +130,17 @@ public class TilemapManager : MonoBehaviour
                 if (canPlace)
                 {
                     GameObject tower = Instantiate(towerToPlace, targetTilemap.GetCellCenterWorld(cellPos), Quaternion.identity);
+                    // Assign placement order for layering
+                    ZLayering zLayering = tower.GetComponent<ZLayering>();
+                    if (zLayering != null)
+                    {
+                        zLayering.SetOrder(++towerOrderCounter);
+                        Debug.Log($"Placed tower: {towerToPlace.name} at {targetTilemap.GetCellCenterWorld(cellPos)}, order={towerOrderCounter}", tower);
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"Tower {tower.name} missing ZLayering component.", tower);
+                    }
                     gameManager.RemoveCurrency(towerCost); // Deduct currency
                     placedTowers.Add(cellPos, tower);
                     ClearPreview();

@@ -14,13 +14,18 @@ public class ProjectileTower : Tower
         float closestDistance = range;
         foreach (var enemy in FindObjectsOfType<Enemy>())
         {
-            float distance = Vector3.Distance(transform.position, enemy.transform.position);
+            // Use 2D distance to ignore Z position
+            Vector2 towerPos = new Vector2(transform.position.x, transform.position.y);
+            Vector2 enemyPos = new Vector2(enemy.transform.position.x, enemy.transform.position.y);
+            float distance = Vector2.Distance(towerPos, enemyPos);
+
             if (distance <= range && IsValidTarget(enemy))
             {
                 if (distance < closestDistance)
                 {
                     closestDistance = distance;
                     target = enemy.gameObject;
+                    Debug.Log($"ProjectileTower {gameObject.name} targeting {enemy.gameObject.name}: distance={distance}, isFlying={enemy.isFlying}", this);
                 }
             }
         }
@@ -46,6 +51,11 @@ public class ProjectileTower : Tower
             if (projScript != null)
             {
                 projScript.SetTarget(target, damage, projectileSpeed);
+            }
+            else
+            {
+                Debug.LogWarning($"Projectile prefab missing Projectile script on {gameObject.name}", this);
+                Destroy(projectile);
             }
         }
     }
