@@ -5,7 +5,7 @@ public class ZLayering : MonoBehaviour
     private Enemy enemy;
     private bool isStatic = false;
     private const float BASE_Y = 1.5f;
-    private const float FLYING_Z = -1000f;
+    private const float FLYING_Z = -10f;
     private const float Z_OFFSET = 0.001f; // Small offset for X-axis order
     private static int globalOrderCounter = 0; // Tracks placement/spawn order
     [SerializeField] private int order; // Instance-specific order
