@@ -12,6 +12,14 @@ public class GameManager : MonoBehaviour
     private float currency;
     private float baseHealth;
 
+    private void OnValidate()
+    {
+        if (currencyLabel == null)
+            Debug.LogWarning("CurrencyLabel not assigned in GameManager.", this);
+        if (baseHealthLabel == null)
+            Debug.LogWarning("BaseHealthLabel not assigned in GameManager.", this);
+    }
+
     private void Start()
     {
         currency = startingCurrency;
@@ -56,7 +64,12 @@ public class GameManager : MonoBehaviour
     {
         if (currencyLabel != null)
         {
-            currencyLabel.text = $"Currency: {currency}";
+            currencyLabel.text = Mathf.FloorToInt(currency).ToString(); // Display number only
+            Debug.Log($"Currency UI updated: {currencyLabel.text}", this);
+        }
+        else
+        {
+            Debug.LogWarning("CurrencyLabel is null in GameManager.", this);
         }
     }
 
@@ -64,7 +77,12 @@ public class GameManager : MonoBehaviour
     {
         if (baseHealthLabel != null)
         {
-            baseHealthLabel.text = $"Base Health: {baseHealth}";
+            baseHealthLabel.text = Mathf.FloorToInt(baseHealth).ToString(); // Display number only
+            Debug.Log($"Health UI updated: {baseHealthLabel.text}", this);
+        }
+        else
+        {
+            Debug.LogWarning("BaseHealthLabel is null in GameManager.", this);
         }
     }
 
