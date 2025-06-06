@@ -13,6 +13,7 @@ public class TilemapManager : MonoBehaviour
     private GameObject previewTower;
     private RangeVisualizer previewRangeVisualizer;
     private Vector3Int lastHighlightedCell;
+    private Vector3Int lastHighlightedLeftCell; // For GeneratorTower's left tile
     private GameManager gameManager;
     private static int towerOrderCounter = 0; // Tracks tower placement order
 
@@ -36,8 +37,8 @@ public class TilemapManager : MonoBehaviour
         towerCost = cost;
         if (towerToPlace != null)
         {
-            previewTower = Instantiate(towerToPlace, Vector3.zero, Quaternion.identity);
-            // Disable tower scripts to prevent attacking or obstruction
+            previewTower = Instantiate(towerPrefab, Vector3.zero, Quaternion.identity);
+            // Disable tower scripts
             MonoBehaviour[] scripts = previewTower.GetComponents<MonoBehaviour>();
             foreach (var script in scripts)
             {
@@ -46,11 +47,11 @@ public class TilemapManager : MonoBehaviour
             SpriteRenderer renderer = previewTower.GetComponent<SpriteRenderer>();
             if (renderer != null)
             {
-                renderer.color = new Color(1f, 1f, 1f, 0.5f); // Semi-transparent
+                renderer.color = new Color(1f, 1f, 1f, 0.6f); // Semi-transparent
             }
             else
             {
-                Debug.LogWarning($"Preview tower {towerPrefab.name} is missing SpriteRenderer.", towerPrefab);
+                Debug.LogWarning($"Preview tower {towerPrefab.name} missing SpriteRenderer.", this);
             }
             // Add range visualizer for attacking towers
             Tower tower = previewTower.GetComponent<Tower>();
@@ -60,6 +61,7 @@ public class TilemapManager : MonoBehaviour
                 previewRangeVisualizer.SetRange(tower.range);
                 previewRangeVisualizer.Show();
             }
+            Debug.Log($"Started placing tower: {towerPrefab.name}, cost: {cost}", this);
         }
     }
 
@@ -85,43 +87,52 @@ public class TilemapManager : MonoBehaviour
             Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             worldPos.z = 0; // Ensure z is 0 for 2D
             bool isShieldTower = towerToPlace.GetComponent<ShieldTower>() != null;
+            bool isGeneratorTower = towerToPlace.GetComponent<GeneratorTower>() != null;
             Tilemap targetTilemap = isShieldTower ? pathTilemap : placementTilemap;
             Tilemap otherTilemap = isShieldTower ? placementTilemap : pathTilemap;
             Vector3Int cellPos = targetTilemap.WorldToCell(worldPos);
+            Vector3Int leftCellPos = cellPos + Vector3Int.left; // Left tile for GeneratorTower
 
             // Update preview position
             if (previewTower != null)
             {
-                previewTower.transform.position = new Vector3(worldPos.x, worldPos.y, 0);
+                Vector3 previewPos = isGeneratorTower ?
+                    targetTilemap.GetCellCenterWorld(cellPos) - new Vector3(0.5f, 0, 0) : // Center between two tiles
+                    targetTilemap.GetCellCenterWorld(cellPos); // Single tile
+                previewTower.transform.position = new Vector3(previewPos.x, previewPos.y, 0);
             }
 
-            // Highlight tile
+            // Highlight tiles
             ClearHighlight();
-            bool canPlace = targetTilemap != null && targetTilemap.HasTile(cellPos) && !placedTowers.ContainsKey(cellPos) && gameManager.HasEnoughCurrency(towerCost);
-            if (isShieldTower)
+            bool canPlace = IsValidPlacementPosition(cellPos, isShieldTower, isGeneratorTower);
+            if (isGeneratorTower)
             {
-                // For ShieldTower, allow placement even if PlacementTilemap has a tile
-                canPlace = canPlace && pathTilemap.HasTile(cellPos);
-            }
-            else
-            {
-                // For other towers, ensure PathTilemap has no tile
-                canPlace = canPlace && (otherTilemap == null || !otherTilemap.HasTile(cellPos));
+                canPlace &= IsValidPlacementPosition(leftCellPos, isShieldTower, isGeneratorTower);
             }
 
             if (canPlace)
             {
+                // Highlight primary tile
                 targetTilemap.SetTileFlags(cellPos, TileFlags.None);
                 targetTilemap.SetColor(cellPos, Color.green);
                 lastHighlightedCell = cellPos;
+                // Highlight left tile for GeneratorTower
+                if (isGeneratorTower)
+                {
+                    targetTilemap.SetTileFlags(leftCellPos, TileFlags.None);
+                    targetTilemap.SetColor(leftCellPos, Color.green);
+                    lastHighlightedLeftCell = leftCellPos;
+                }
+                Debug.Log($"Highlighting tile(s) at {cellPos}{(isGeneratorTower ? $" and {leftCellPos}" : "")} for {towerToPlace.name}", this);
             }
             else
             {
-                Debug.Log($"Cannot place {towerToPlace.name} at {cellPos} (World: {worldPos}). " +
+                Debug.Log($"Cannot place {towerToPlace.name} at {cellPos}{(isGeneratorTower ? $" or {leftCellPos}" : "")}. " +
                           $"Target tilemap ({targetTilemap?.name}): HasTile={targetTilemap?.HasTile(cellPos)}, " +
+                          $"Left tile HasTile={targetTilemap?.HasTile(leftCellPos)}, " +
                           $"Other tilemap ({otherTilemap?.name}): HasTile={otherTilemap != null && otherTilemap.HasTile(cellPos)}, " +
-                          $"Tile occupied: {placedTowers.ContainsKey(cellPos)}, " +
-                          $"Sufficient currency: {gameManager.HasEnoughCurrency(towerCost)}");
+                          $"Tile occupied: {placedTowers.ContainsKey(cellPos)} or {placedTowers.ContainsKey(leftCellPos)}, " +
+                          $"Sufficient currency: {gameManager.HasEnoughCurrency(towerCost)}", this);
             }
 
             // Place tower
@@ -129,13 +140,16 @@ public class TilemapManager : MonoBehaviour
             {
                 if (canPlace)
                 {
-                    GameObject tower = Instantiate(towerToPlace, targetTilemap.GetCellCenterWorld(cellPos), Quaternion.identity);
+                    Vector3 placePos = isGeneratorTower ?
+                        targetTilemap.GetCellCenterWorld(cellPos) - new Vector3(0.5f, 0, 0) :
+                        targetTilemap.GetCellCenterWorld(cellPos);
+                    GameObject tower = Instantiate(towerToPlace, placePos, Quaternion.identity);
                     // Assign placement order for layering
                     ZLayering zLayering = tower.GetComponent<ZLayering>();
                     if (zLayering != null)
                     {
                         zLayering.SetOrder(++towerOrderCounter);
-                        Debug.Log($"Placed tower: {towerToPlace.name} at {targetTilemap.GetCellCenterWorld(cellPos)}, order={towerOrderCounter}", tower);
+                        Debug.Log($"Placed tower: {towerToPlace.name} at {placePos}, order={towerOrderCounter}", tower);
                     }
                     else
                     {
@@ -143,13 +157,17 @@ public class TilemapManager : MonoBehaviour
                     }
                     gameManager.RemoveCurrency(towerCost); // Deduct currency
                     placedTowers.Add(cellPos, tower);
+                    if (isGeneratorTower)
+                    {
+                        placedTowers.Add(leftCellPos, tower); // Reserve left tile
+                    }
                     ClearPreview();
                     towerToPlace = null;
                     towerCost = 0f;
                 }
                 else
                 {
-                    Debug.LogWarning($"Failed to place {towerToPlace.name} at {cellPos} (World: {worldPos}).");
+                    Debug.LogWarning($"Failed to place {towerToPlace.name} at {cellPos}.", this);
                 }
             }
 
@@ -179,6 +197,11 @@ public class TilemapManager : MonoBehaviour
             placementTilemap.SetTileFlags(lastHighlightedCell, TileFlags.None);
             placementTilemap.SetColor(lastHighlightedCell, Color.white);
         }
+        if (placementTilemap != null && placementTilemap.HasTile(lastHighlightedLeftCell))
+        {
+            placementTilemap.SetTileFlags(lastHighlightedLeftCell, TileFlags.None);
+            placementTilemap.SetColor(lastHighlightedLeftCell, Color.white);
+        }
         if (pathTilemap != null && pathTilemap.HasTile(lastHighlightedCell))
         {
             pathTilemap.SetTileFlags(lastHighlightedCell, TileFlags.None);
@@ -188,7 +211,48 @@ public class TilemapManager : MonoBehaviour
 
     public void RemoveTower(Vector3Int cellPos)
     {
-        placedTowers.Remove(cellPos);
+        if (placedTowers.ContainsKey(cellPos))
+        {
+            GameObject tower = placedTowers[cellPos];
+            placedTowers.Remove(cellPos);
+            // Remove associated left tile for GeneratorTower
+            Vector3Int leftCellPos = cellPos + Vector3Int.left;
+            if (placedTowers.ContainsKey(leftCellPos) && placedTowers[leftCellPos] == tower)
+            {
+                placedTowers.Remove(leftCellPos);
+            }
+            // Check right tile in case tower was stored under left tile
+            Vector3Int rightCellPos = cellPos + Vector3Int.right;
+            if (placedTowers.ContainsKey(rightCellPos) && placedTowers[rightCellPos] == tower)
+            {
+                placedTowers.Remove(rightCellPos);
+            }
+        }
+    }
+
+    private bool IsValidPlacementPosition(Vector3Int cellPos, bool isShieldTower, bool isGeneratorTower)
+    {
+        if (towerToPlace == null)
+        {
+            return false;
+        }
+
+        Tilemap targetTilemap = isShieldTower ? pathTilemap : placementTilemap;
+        Tilemap otherTilemap = isShieldTower ? placementTilemap : pathTilemap;
+
+        bool hasTile = targetTilemap != null && targetTilemap.HasTile(cellPos);
+        bool isPathTile = otherTilemap != null && otherTilemap.HasTile(cellPos);
+        bool isOccupied = placedTowers.ContainsKey(cellPos);
+        bool hasEnoughCurrency = gameManager.HasEnoughCurrency(towerCost);
+
+        if (isShieldTower)
+        {
+            return hasTile && !isOccupied && hasEnoughCurrency;
+        }
+        else
+        {
+            return hasTile && !isPathTile && !isOccupied && hasEnoughCurrency;
+        }
     }
 
     private bool CanAttack(Tower tower)
