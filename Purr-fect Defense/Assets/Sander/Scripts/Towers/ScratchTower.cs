@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class ScratchTower : Tower
 {
+    [SerializeField] private GameObject scratchEffectPrefab; // Effect prefab
+
     public override void FindTarget()
     {
         target = null;
@@ -40,6 +42,18 @@ public class ScratchTower : Tower
             if (enemy != null)
             {
                 enemy.TakeDamage(damage);
+                if (scratchEffectPrefab != null)
+                {
+                    // Instantiate effect at enemy's position
+                    Vector3 effectPosition = target.transform.position;
+                    effectPosition.z = -1f; // Ensure above enemy sprite
+                    Instantiate(scratchEffectPrefab, effectPosition, Quaternion.identity);
+                    Debug.Log($"Scratch effect spawned on {target.name}", this);
+                }
+                else
+                {
+                    Debug.LogWarning("ScratchEffectPrefab is not assigned in ScratchTower.", this);
+                }
             }
         }
     }
@@ -47,5 +61,13 @@ public class ScratchTower : Tower
     public override bool IsValidTarget(Enemy enemy)
     {
         return !enemy.isFlying; // Only target non-flying enemies
+    }
+
+    private void OnValidate()
+    {
+        if (scratchEffectPrefab == null)
+        {
+            Debug.LogWarning("ScratchEffectPrefab is not assigned in ScratchTower.", this);
+        }
     }
 }

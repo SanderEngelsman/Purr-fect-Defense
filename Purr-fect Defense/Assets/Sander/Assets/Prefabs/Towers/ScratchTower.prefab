@@ -107,6 +107,7 @@ MonoBehaviour:
   target: {fileID: 0}
   isStunned: 0
   stunTimer: 0
+  scratchEffectPrefab: {fileID: 7921070958671192284, guid: 91a71ead3f317b842bd0cb5df96ef9de, type: 3}
 --- !u!95 &-1872573444293791491
 Animator:
   serializedVersion: 5
@@ -185,3 +186,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 742634c5986fd0b4c96490f39a5cdad4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  order: 0
