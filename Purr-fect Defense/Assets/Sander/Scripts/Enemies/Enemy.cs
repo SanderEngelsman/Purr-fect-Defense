@@ -23,6 +23,7 @@ public class Enemy : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private float previousX;
     private static int enemySpawnOrderCounter = 0; // Tracks enemy spawn order
+    private Animator animator; // Added for animation control
 
     public virtual void Start()
     {
@@ -31,6 +32,7 @@ public class Enemy : MonoBehaviour
         gameManager = FindObjectOfType<GameManager>();
         healthBar = GetComponent<EnemyHealthBar>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>(); // Cache Animator
         previousX = transform.position.x;
         // Assign spawn order for layering
         ZLayering zLayering = GetComponent<ZLayering>();
@@ -45,6 +47,10 @@ public class Enemy : MonoBehaviour
         else
         {
             Debug.LogWarning($"Enemy {gameObject.name}: No SpriteRenderer found! Sprite flipping will not work.", this);
+        }
+        if (animator == null)
+        {
+            Debug.LogWarning($"Animator missing on {gameObject.name}. Animations will not work.", this);
         }
     }
 
@@ -61,6 +67,10 @@ public class Enemy : MonoBehaviour
         else
         {
             Move();
+            if (animator != null)
+            {
+                animator.SetBool("IsAttacking", false); // Revert to idle when moving
+            }
         }
     }
 
@@ -123,6 +133,15 @@ public class Enemy : MonoBehaviour
         {
             shieldTarget.TakeDamage(shieldAttackDamage);
             shieldAttackTimer = 0f;
+            if (animator != null)
+            {
+                animator.SetBool("IsAttacking", true); // Trigger attack animation
+                Debug.Log($"Playing attack animation on {gameObject.name} (AttackShield)", this);
+            }
+        }
+        else if (animator != null)
+        {
+            animator.SetBool("IsAttacking", false); // Revert to idle between attacks
         }
     }
 
@@ -133,6 +152,15 @@ public class Enemy : MonoBehaviour
         {
             gameManager.TakeBaseDamage(shieldAttackDamage);
             shieldAttackTimer = 0f;
+            if (animator != null)
+            {
+                animator.SetBool("IsAttacking", true); // Trigger attack animation
+                Debug.Log($"Playing attack animation on {gameObject.name} (AttackBase)", this);
+            }
+        }
+        else if (animator != null)
+        {
+            animator.SetBool("IsAttacking", false); // Revert to idle between attacks
         }
     }
 
@@ -141,7 +169,7 @@ public class Enemy : MonoBehaviour
         health -= damage;
         if (healthBar != null)
         {
-            healthBar.ShowHealthBar();
+            healthBar.ShowHealthBar(); // Fixed: Use correct method
         }
         if (health <= 0)
         {
@@ -162,4 +190,3 @@ public class Enemy : MonoBehaviour
 
     public float Health => health;
 }
-    

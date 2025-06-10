@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public class ScratchTower : Tower
 {
@@ -36,6 +33,7 @@ public class ScratchTower : Tower
 
     public override void Attack()
     {
+        base.Attack(); // Triggers animation
         if (target != null)
         {
             Enemy enemy = target.GetComponent<Enemy>();

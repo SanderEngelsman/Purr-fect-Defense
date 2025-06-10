@@ -11,10 +11,12 @@ public abstract class Tower : MonoBehaviour
     public float stunTimer = 0f;
     private SpriteRenderer spriteRenderer;
     private Color originalColor;
+    private Animator animator; // Added for animation control
 
     public virtual void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>(); // Cache Animator
         if (spriteRenderer != null)
         {
             originalColor = spriteRenderer.color;
@@ -22,6 +24,10 @@ public abstract class Tower : MonoBehaviour
         else
         {
             Debug.LogWarning($"SpriteRenderer missing on {gameObject.name}. Stun visual effect will not work.", this);
+        }
+        if (animator == null)
+        {
+            Debug.LogWarning($"Animator missing on {gameObject.name}. Animations will not work.", this);
         }
     }
 
@@ -42,6 +48,10 @@ public abstract class Tower : MonoBehaviour
                     spriteRenderer.color = originalColor; // Revert color
                 }
             }
+            if (animator != null)
+            {
+                animator.SetBool("IsAttacking", false); // Ensure idle during stun
+            }
             return;
         }
 
@@ -49,6 +59,10 @@ public abstract class Tower : MonoBehaviour
         if (target != null && CanAttack())
         {
             Attack();
+        }
+        else if (animator != null)
+        {
+            animator.SetBool("IsAttacking", false); // Revert to idle if not attacking
         }
     }
 
@@ -71,7 +85,11 @@ public abstract class Tower : MonoBehaviour
 
     public virtual void Attack()
     {
-        // Default: No attack
+        if (animator != null)
+        {
+            animator.SetBool("IsAttacking", true); // Trigger attack animation
+            Debug.Log($"Playing attack animation on {gameObject.name}", this);
+        }
     }
 
     public virtual bool IsValidTarget(Enemy enemy)

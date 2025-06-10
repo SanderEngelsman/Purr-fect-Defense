@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public class ProjectileTower : Tower
 {
@@ -44,6 +41,7 @@ public class ProjectileTower : Tower
 
     public override void Attack()
     {
+        base.Attack(); // Triggers animation
         if (target != null)
         {
             GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
