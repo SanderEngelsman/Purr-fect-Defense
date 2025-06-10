@@ -39,14 +39,17 @@ public class Shop : MonoBehaviour
             Debug.LogWarning("ContentParent is not assigned in Shop.", this);
         if (Towers == null || Towers.Length == 0)
             Debug.LogWarning("Towers array is null or empty in Shop.", this);
-        foreach (var data in Towers)
+        for (int i = 0; i < Towers.Length; i++)
         {
+            var data = Towers[i];
             if (data.towerButton == null)
-                Debug.LogWarning("TowerButton is not assigned in ShopTowerData.", this);
+                Debug.LogWarning($"TowerButton is null for Towers[{i}] ({data.towerPrefab?.name ?? "Unknown"}).", this);
             if (data.costLabel == null)
-                Debug.LogWarning("CostLabel is not assigned in ShopTowerData.", this);
+                Debug.LogWarning($"CostLabel is null for Towers[{i}] ({data.towerPrefab?.name ?? "Unknown"}).", this);
             if (data.resellPrice < 0)
                 Debug.LogWarning($"ResellPrice for {data.towerPrefab?.name} is negative.", this);
+            if (data.towerButton != null && !data.towerButton.gameObject.activeSelf)
+                Debug.LogWarning($"TowerButton {data.towerButton.name} for Towers[{i}] is inactive in Inspector.", this);
         }
     }
 
@@ -119,61 +122,85 @@ public class Shop : MonoBehaviour
             return;
         }
 
+        // Log existing children
+        Debug.Log($"ContentParent has {contentParent.childCount} children before setup.", this);
         foreach (Transform child in contentParent)
         {
-            if (!IsShopTowerButton(child))
-                Destroy(child.gameObject);
+            Debug.Log($"Child in ContentParent: {child.name}, Active: {child.gameObject.activeSelf}", child);
         }
+
         for (int i = 0; i < Towers.Length; i++)
         {
-            Debug.Log($"Creating entry for tower {i}: {Towers[i].towerPrefab?.name}", this);
-            if (Towers[i].towerButton == null)
+            var data = Towers[i];
+            Debug.Log($"Processing tower {i}: {data.towerPrefab?.name ?? "Unknown"}", this);
+            if (data.towerButton == null)
             {
-                Debug.LogWarning($"TowerButton is null for Towers[{i}]. Skipping.", this);
+                Debug.LogWarning($"TowerButton is null for Towers[{i}] ({data.towerPrefab?.name}). Skipping entry.", this);
                 continue;
             }
-            if (Towers[i].towerSprite == null)
+            if (!data.towerButton.gameObject.activeSelf)
+            {
+                Debug.Log($"Activating button {data.towerButton.name} for {data.towerPrefab?.name}.", this);
+                data.towerButton.gameObject.SetActive(true);
+            }
+            if (data.towerSprite == null)
             {
                 Debug.LogWarning($"TowerSprite is null for Towers[{i}].", this);
             }
-            if (string.IsNullOrEmpty(Towers[i].description))
+            if (string.IsNullOrEmpty(data.description))
             {
                 Debug.LogWarning($"Description is empty for Towers[{i}].", this);
             }
 
             int index = i;
-            GameObject container = new GameObject($"TowerEntry_{Towers[i].towerPrefab?.name ?? "Unknown"}");
+            GameObject container = new GameObject($"TowerEntry_{data.towerPrefab?.name ?? "Unknown"}");
             container.transform.SetParent(contentParent, false);
             RectTransform containerRect = container.AddComponent<RectTransform>();
-            containerRect.sizeDelta = new Vector2(200, 300);
+            containerRect.sizeDelta = new Vector2(180, 200);
             VerticalLayoutGroup layout = container.AddComponent<VerticalLayoutGroup>();
-            layout.padding = new RectOffset(10, 10, 10, 10);
-            layout.spacing = 15;
+            layout.padding = new RectOffset(5, 5, 5, 5);
+            layout.spacing = 5;
             layout.childAlignment = TextAnchor.MiddleCenter;
             layout.childForceExpandWidth = true;
             layout.childForceExpandHeight = false;
-            GameObject imageObj = new GameObject("TowerImage");
+
+            GameObject imageObj = new GameObject("TowerIcon");
             imageObj.transform.SetParent(container.transform, false);
             Image towerImage = imageObj.AddComponent<Image>();
-            towerImage.sprite = Towers[i].towerSprite;
+            towerImage.sprite = data.towerSprite;
             towerImage.preserveAspect = true;
             RectTransform imageRect = imageObj.GetComponent<RectTransform>();
-            imageRect.sizeDelta = new Vector2(100, 100);
-            Towers[i].towerButton.transform.SetParent(container.transform, false);
-            Towers[i].towerButton.onClick.RemoveAllListeners();
-            Towers[i].towerButton.onClick.AddListener(() => SelectTower(index));
+            imageRect.sizeDelta = new Vector2(80, 80);
+            Debug.Log($"Added TowerIcon for {data.towerPrefab?.name}, Active: {imageObj.activeSelf}", imageObj);
+
+            Debug.Log($"Parenting button {data.towerButton.name} to {container.name}, Button Active: {data.towerButton.gameObject.activeSelf}", this);
+            data.towerButton.transform.SetParent(container.transform, false);
+            RectTransform buttonRect = data.towerButton.GetComponent<RectTransform>();
+            buttonRect.sizeDelta = new Vector2(100, 30);
+            buttonRect.localScale = Vector3.one; // Ensure scale is 1
+            if (data.towerButton.GetComponent<Image>() == null)
+            {
+                Debug.Log($"Adding Image component to button {data.towerButton.name}.", this);
+                Image buttonImage = data.towerButton.gameObject.AddComponent<Image>();
+                buttonImage.color = Color.white; // Default white for visibility
+            }
+            data.towerButton.onClick.RemoveAllListeners();
+            data.towerButton.onClick.AddListener(() => SelectTower(index));
+            Debug.Log($"Assigned SelectTower({index}) to button {data.towerButton.name}, Interactable: {data.towerButton.interactable}", this);
+
             GameObject descObj = new GameObject("DescriptionText");
             descObj.transform.SetParent(container.transform, false);
             TextMeshProUGUI descriptionText = descObj.AddComponent<TextMeshProUGUI>();
-            descriptionText.text = Towers[i].description;
-            descriptionText.fontSize = 16;
+            descriptionText.text = data.description;
+            descriptionText.fontSize = 14;
             descriptionText.alignment = TextAlignmentOptions.Center;
             descriptionText.enableWordWrapping = true;
             RectTransform descRect = descObj.GetComponent<RectTransform>();
-            descRect.sizeDelta = new Vector2(180, 30);
+            descRect.sizeDelta = new Vector2(160, 40);
+            Debug.Log($"Added DescriptionText for {data.towerPrefab?.name}, Active: {descObj.activeSelf}", descObj);
         }
         UpdateCosts();
-        Debug.Log($"SetupTowerEntries completed. {Towers.Length} entries created.", this);
+        Debug.Log($"SetupTowerEntries completed. Created {Towers.Length} entries.", this);
     }
 
     private bool IsShopTowerButton(Transform child)
@@ -181,8 +208,12 @@ public class Shop : MonoBehaviour
         foreach (var data in Towers)
         {
             if (child != null && data.towerButton != null && data.towerButton.transform == child)
+            {
+                Debug.Log($"Identified {child.name} as a shop tower button.", this);
                 return true;
+            }
         }
+        Debug.Log($"Child {child.name} is not a shop tower button.", this);
         return false;
     }
 
@@ -233,6 +264,11 @@ public class Shop : MonoBehaviour
                 data.costLabel.text = data.cost.ToString();
                 bool canAfford = gameManager.HasEnoughCurrency(data.cost);
                 data.costLabel.color = canAfford ? Color.white : Color.red;
+                Debug.Log($"Updated cost label for {data.towerPrefab?.name}: {data.cost}, Color: {data.costLabel.color}", this);
+            }
+            else
+            {
+                Debug.LogWarning($"CostLabel is null for {data.towerPrefab?.name}.", this);
             }
         }
     }
