@@ -12,6 +12,7 @@ public abstract class Tower : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Color originalColor;
     private Animator animator; // Added for animation control
+    private static readonly int AttackTrigger = Animator.StringToHash("AttackTrigger"); // Cache trigger ID
 
     public virtual void Start()
     {
@@ -48,10 +49,6 @@ public abstract class Tower : MonoBehaviour
                     spriteRenderer.color = originalColor; // Revert color
                 }
             }
-            if (animator != null)
-            {
-                animator.SetBool("IsAttacking", false); // Ensure idle during stun
-            }
             return;
         }
 
@@ -59,10 +56,6 @@ public abstract class Tower : MonoBehaviour
         if (target != null && CanAttack())
         {
             Attack();
-        }
-        else if (animator != null)
-        {
-            animator.SetBool("IsAttacking", false); // Revert to idle if not attacking
         }
     }
 
@@ -87,8 +80,8 @@ public abstract class Tower : MonoBehaviour
     {
         if (animator != null)
         {
-            animator.SetBool("IsAttacking", true); // Trigger attack animation
-            Debug.Log($"Playing attack animation on {gameObject.name}", this);
+            animator.SetTrigger(AttackTrigger); // Trigger attack animation
+            Debug.Log($"Triggered attack animation on {gameObject.name}", this);
         }
     }
 

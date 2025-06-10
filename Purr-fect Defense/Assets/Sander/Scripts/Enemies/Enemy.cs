@@ -24,6 +24,7 @@ public class Enemy : MonoBehaviour
     private float previousX;
     private static int enemySpawnOrderCounter = 0; // Tracks enemy spawn order
     private Animator animator; // Added for animation control
+    private static readonly int AttackTrigger = Animator.StringToHash("AttackTrigger"); // Cache trigger ID
 
     public virtual void Start()
     {
@@ -67,10 +68,6 @@ public class Enemy : MonoBehaviour
         else
         {
             Move();
-            if (animator != null)
-            {
-                animator.SetBool("IsAttacking", false); // Revert to idle when moving
-            }
         }
     }
 
@@ -135,13 +132,9 @@ public class Enemy : MonoBehaviour
             shieldAttackTimer = 0f;
             if (animator != null)
             {
-                animator.SetBool("IsAttacking", true); // Trigger attack animation
-                Debug.Log($"Playing attack animation on {gameObject.name} (AttackShield)", this);
+                animator.SetTrigger(AttackTrigger); // Trigger attack animation
+                Debug.Log($"Triggered attack animation on {gameObject.name} (AttackShield)", this);
             }
-        }
-        else if (animator != null)
-        {
-            animator.SetBool("IsAttacking", false); // Revert to idle between attacks
         }
     }
 
@@ -154,13 +147,9 @@ public class Enemy : MonoBehaviour
             shieldAttackTimer = 0f;
             if (animator != null)
             {
-                animator.SetBool("IsAttacking", true); // Trigger attack animation
-                Debug.Log($"Playing attack animation on {gameObject.name} (AttackBase)", this);
+                animator.SetTrigger(AttackTrigger); // Trigger attack animation
+                Debug.Log($"Triggered attack animation on {gameObject.name} (AttackBase)", this);
             }
-        }
-        else if (animator != null)
-        {
-            animator.SetBool("IsAttacking", false); // Revert to idle between attacks
         }
     }
 
