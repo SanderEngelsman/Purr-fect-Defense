@@ -4147,7 +4147,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPoint: {fileID: 1408609373}
-  timeBetweenWaves: 10
   waves:
   - enemies:
     - {fileID: 4624401258798809816, guid: 5ef5f090217809c49a62a78f9f1bed5d, type: 3}
@@ -4231,7 +4230,6 @@ MonoBehaviour:
     - {fileID: 4624401258798809816, guid: 5ef5f090217809c49a62a78f9f1bed5d, type: 3}
   startWaveButton: {fileID: 2100087818}
   waveLabel: {fileID: 1746483575}
-  currentWave: 0
 --- !u!4 &860368182
 Transform:
   m_ObjectHideFlags: 0
@@ -12089,7 +12087,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 860368181}
         m_TargetAssemblyTypeName: WaveManager, Assembly-CSharp
-        m_MethodName: StartFirstWave
+        m_MethodName: StartNextWave
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

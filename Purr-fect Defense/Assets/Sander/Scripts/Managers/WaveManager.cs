@@ -13,25 +13,27 @@ public struct Wave
 public class WaveManager : MonoBehaviour
 {
     [SerializeField] private Transform spawnPoint;
-    [SerializeField] private float timeBetweenWaves = 30f;
     [SerializeField] private Wave[] waves;
     [SerializeField] private Button startWaveButton;
     [SerializeField] private TextMeshProUGUI waveLabel;
     private int waveNumber = 0; // Display wave number, starts at 0
-    public int currentWave = 0; // Index into waves array
+    private int currentWave = 0; // Index into waves array
     private bool isPreGame = true;
+    private bool isWaveActive = false;
+    private List<GameObject> activeEnemies = new List<GameObject>(); // Track spawned enemies
 
     public bool IsPreGame => isPreGame;
+    public bool IsWaveActive => isWaveActive;
 
     private void OnValidate()
     {
         if (startWaveButton == null)
         {
-            Debug.LogWarning("StartWaveButton is not assigned in WaveManager. Button will not be destroyed after starting the first wave.", this);
+            Debug.LogWarning("StartWaveButton is not assigned in WaveManager.", this);
         }
         if (waveLabel == null)
         {
-            Debug.LogWarning("WaveLabel is not assigned in WaveManager. Wave counter will not display.", this);
+            Debug.LogWarning("WaveLabel is not assigned in WaveManager.", this);
         }
         if (spawnPoint == null)
         {
@@ -46,62 +48,98 @@ public class WaveManager : MonoBehaviour
     private void Start()
     {
         UpdateWaveLabel();
+        if (startWaveButton != null)
+        {
+            startWaveButton.gameObject.SetActive(true); // Ensure button is visible
+        }
     }
 
-    public void StartFirstWave()
+    private void Update()
     {
-        if (isPreGame)
+        if (isWaveActive && activeEnemies.Count > 0)
         {
-            isPreGame = false;
-            waveNumber = 1; // Set to 1 when starting first wave
-            UpdateWaveLabel();
-            StartCoroutine(StartWave());
-            // Destroy the start wave button
-            if (startWaveButton != null)
+            // Remove destroyed enemies
+            activeEnemies.RemoveAll(enemy => enemy == null);
+            if (activeEnemies.Count == 0)
             {
-                Debug.Log("Destroying Start Wave button.", startWaveButton.gameObject);
-                Destroy(startWaveButton.gameObject);
+                EndWave();
+            }
+        }
+    }
+
+    public void StartNextWave()
+    {
+        if (isPreGame || !isWaveActive)
+        {
+            if (currentWave < waves.Length)
+            {
+                isPreGame = false;
+                isWaveActive = true;
+                waveNumber = currentWave + 1; // Display wave number (1-based)
+                UpdateWaveLabel();
+                StartCoroutine(StartWave());
+                if (startWaveButton != null)
+                {
+                    startWaveButton.gameObject.SetActive(false); // Hide button during wave
+                }
             }
             else
             {
-                Debug.LogWarning("StartWaveButton is null. Cannot destroy button.", this);
+                Debug.Log("All waves completed!");
+                if (startWaveButton != null)
+                {
+                    startWaveButton.gameObject.SetActive(false); // Hide button at game end
+                }
             }
         }
     }
 
     private IEnumerator StartWave()
     {
-        while (currentWave < waves.Length)
+        Wave wave = waves[currentWave];
+        activeEnemies.Clear(); // Reset for new wave
+        for (int i = 0; i < wave.enemies.Length; i++)
         {
-            if (currentWave > 0) // Skip delay for first wave after pre-game
+            if (wave.enemies[i] != null)
             {
-                yield return new WaitForSeconds(timeBetweenWaves);
-                waveNumber++; // Increment for next wave
-                UpdateWaveLabel();
+                GameObject enemy = Instantiate(wave.enemies[i], spawnPoint.position, Quaternion.identity);
+                activeEnemies.Add(enemy); // Track enemy
             }
-            Wave wave = waves[currentWave];
-            for (int i = 0; i < wave.enemies.Length; i++)
+            else
             {
-                if (wave.enemies[i] != null)
-                {
-                    Instantiate(wave.enemies[i], spawnPoint.position, Quaternion.identity);
-                }
-                else
-                {
-                    Debug.LogWarning($"Wave {currentWave + 1}, Enemy {i + 1} is null!");
-                }
-                yield return new WaitForSeconds(1f);
+                Debug.LogWarning($"Wave {currentWave + 1}, Enemy {i + 1} is null!");
             }
-            currentWave++;
+            yield return new WaitForSeconds(1f);
         }
-        Debug.Log("All waves completed!");
+    }
+
+    private void EndWave()
+    {
+        isWaveActive = false;
+        currentWave++;
+        if (currentWave < waves.Length)
+        {
+            if (startWaveButton != null)
+            {
+                startWaveButton.gameObject.SetActive(true); // Show button for next wave
+            }
+            UpdateWaveLabel(); // Show next wave number
+        }
+        else
+        {
+            Debug.Log("All waves completed!");
+            if (startWaveButton != null)
+            {
+                startWaveButton.gameObject.SetActive(false); // Hide button at game end
+            }
+        }
     }
 
     private void UpdateWaveLabel()
     {
         if (waveLabel != null)
         {
-            waveLabel.text = $"Wave {waveNumber}/{waves.Length}"; // Display Wave X/Y
+            waveLabel.text = $"Wave {waveNumber}/{waves.Length}";
             Debug.Log($"Wave UI updated: {waveLabel.text}", this);
         }
         else

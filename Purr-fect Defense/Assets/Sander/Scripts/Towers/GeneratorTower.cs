@@ -26,7 +26,7 @@ public class GeneratorTower : Tower
             return;
         }
 
-        if (waveManager.IsPreGame)
+        if (waveManager.IsPreGame || !waveManager.IsWaveActive)
             return;
 
         currencyTimer += Time.deltaTime;
