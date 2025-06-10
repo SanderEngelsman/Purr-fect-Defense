@@ -16,6 +16,8 @@ public struct ShopTowerData
     public Sprite towerSprite;
     public string description;
     public float resellPrice;
+    [Tooltip("Width multiplier for TowerIcon (e.g., 2 for double width, 1 for default)")]
+    public float iconWidthMultiplier;
 }
 
 public class Shop : MonoBehaviour
@@ -25,16 +27,18 @@ public class Shop : MonoBehaviour
     [SerializeField] public ShopTowerData[] Towers;
     [SerializeField, Tooltip("Font for tower description text")]
     private TMP_FontAsset descriptionFont;
-    [SerializeField, Tooltip("Vertical spacing between image, description, and button")]
-    public float entrySpacing = 5f;
+    [SerializeField, Tooltip("Base width for TowerIcon (height remains unchanged)")]
+    private float baseIconWidth = 80f;
     private Image towerIcon;
     private TextMeshProUGUI descriptionText;
     private GameManager gameManager;
     private TilemapManager tilemapManager;
     private ShopPanelAnimator shopPanelAnimator;
+    private Canvas shopCanvas;
     private bool isOpen = false;
     private float lastToggleTime;
     private int currentTowerIndex = 0;
+    private bool needsCanvasUpdate = false;
     private const float TOGGLE_DEBOUNCE = 0.2f;
 
     private void OnValidate()
@@ -49,8 +53,8 @@ public class Shop : MonoBehaviour
             Debug.LogWarning("Towers array is null or empty in Shop.", this);
         if (descriptionFont == null)
             Debug.LogWarning("DescriptionFont is not assigned in Shop.", this);
-        if (entrySpacing < 0)
-            Debug.LogWarning("EntrySpacing is negative. Should be 0 or positive.", this);
+        if (baseIconWidth <= 0)
+            Debug.LogWarning("BaseIconWidth must be positive.", this);
         for (int i = 0; i < (Towers?.Length ?? 0); i++)
         {
             var data = Towers[i];
@@ -62,14 +66,21 @@ public class Shop : MonoBehaviour
                 Debug.LogWarning($"CostLabel is null for Towers[{i}].", this);
             if (data.towerSprite == null)
                 Debug.LogWarning($"TowerSprite is null for Towers[{i}].", this);
+            if (string.IsNullOrEmpty(data.description))
+                Debug.LogWarning($"Description is empty for Towers[{i}].", this);
             if (data.resellPrice < 0)
                 Debug.LogWarning($"ResellPrice for {data.towerPrefab?.name} is negative.", this);
+            if (data.iconWidthMultiplier <= 0)
+                Debug.LogWarning($"IconWidthMultiplier must be positive for Towers[{i}].", this);
         }
     }
 
     private void Awake()
     {
         Debug.Log($"Shop Awake called on {gameObject.name}.", this);
+        shopCanvas = shopPanel != null ? shopPanel.GetComponentInParent<Canvas>() : null;
+        if (shopCanvas == null)
+            Debug.LogError("ShopPanel is not under a Canvas.", this);
     }
 
     private void Start()
@@ -123,6 +134,16 @@ public class Shop : MonoBehaviour
         }
     }
 
+    private void LateUpdate()
+    {
+        if (needsCanvasUpdate)
+        {
+            Canvas.ForceUpdateCanvases();
+            needsCanvasUpdate = false;
+            Debug.Log("Forced canvas update in LateUpdate.", this);
+        }
+    }
+
 #if UNITY_EDITOR
     [CustomEditor(typeof(Shop))]
     public class ShopEditor : Editor
@@ -162,6 +183,15 @@ public class Shop : MonoBehaviour
             Debug.LogError("Towers array is null or empty in SetupShopPanel.", this);
             return;
         }
+        if (shopCanvas == null)
+        {
+            shopCanvas = shopPanel.GetComponentInParent<Canvas>();
+            if (shopCanvas == null)
+            {
+                Debug.LogError("ShopPanel is not under a Canvas in SetupShopPanel.", this);
+                return;
+            }
+        }
 
         towerIcon = shopPanel.transform.Find("TowerIcon")?.GetComponent<Image>();
         if (towerIcon == null)
@@ -169,36 +199,48 @@ public class Shop : MonoBehaviour
             Debug.LogError("TowerIcon not found or missing Image component in ShopPanel.", this);
             return;
         }
-        RectTransform iconRect = towerIcon.GetComponent<RectTransform>();
-        iconRect.sizeDelta = new Vector2(180, 180);
-        iconRect.anchoredPosition = new Vector2(200, -120); // Top position
 
         descriptionText = shopPanel.transform.Find("DescriptionText")?.GetComponent<TextMeshProUGUI>();
         if (descriptionText == null)
         {
-            Debug.LogError("DescriptionText not found or missing TextMeshProUGUI in ShopPanel.", this);
-            return;
+            Debug.LogWarning("DescriptionText not found via Find. Searching all children of ShopPanel.", this);
+            descriptionText = shopPanel.GetComponentInChildren<TextMeshProUGUI>();
+            if (descriptionText == null)
+            {
+                Debug.LogError("No TextMeshProUGUI found in ShopPanel children.", this);
+                return;
+            }
+            else
+            {
+                Debug.Log($"Found TextMeshProUGUI: {descriptionText.name}.", descriptionText);
+            }
         }
         if (descriptionFont != null)
         {
             descriptionText.font = descriptionFont;
-            Debug.Log($"Applied font {descriptionFont.name} to DescriptionText.", descriptionText);
+            Debug.Log($"Applied font {descriptionFont.name} to DescriptionText ({descriptionText.name}).", descriptionText);
         }
-        RectTransform descRect = descriptionText.GetComponent<RectTransform>();
-        descRect.sizeDelta = new Vector2(160, 40);
-        descRect.anchoredPosition = new Vector2(0, 100 - 80 / 2 - 40 / 2 - entrySpacing); // Below icon
 
-        // Ensure all tower buttons are initially inactive
+        // Ensure all tower buttons are parented and inactive
         foreach (var data in Towers)
         {
             if (data.towerButton != null)
             {
+                if (data.towerButton.transform.parent != shopPanel.transform)
+                {
+                    data.towerButton.transform.SetParent(shopPanel.transform, false);
+                    Debug.Log($"Parented tower button {data.towerButton.name} to ShopPanel.", data.towerButton);
+                }
                 data.towerButton.gameObject.SetActive(false);
                 Debug.Log($"Deactivated tower button: {data.towerButton.name}.", data.towerButton);
             }
+            else
+            {
+                Debug.LogWarning($"TowerButton is null for tower: {data.towerPrefab?.name ?? "Unknown"}.", this);
+            }
         }
 
-        Debug.Log($"SetupShopPanel completed. Tower count: {Towers.Length}.", this);
+        Debug.Log($"SetupShopPanel completed. Tower count: {Towers.Length}, DescriptionText: {descriptionText?.name ?? "null"}.", this);
     }
 
     private void CycleTower(int direction)
@@ -221,35 +263,37 @@ public class Shop : MonoBehaviour
         if (towerIcon != null)
         {
             towerIcon.sprite = data.towerSprite;
-            Debug.Log($"Updated TowerIcon to {data.towerSprite?.name ?? "None"}.", towerIcon);
+            towerIcon.enabled = data.towerSprite != null;
+            RectTransform iconRect = towerIcon.GetComponent<RectTransform>();
+            if (iconRect != null)
+            {
+                Vector2 size = iconRect.sizeDelta;
+                size.x = baseIconWidth * data.iconWidthMultiplier;
+                iconRect.sizeDelta = size;
+                Debug.Log($"Set TowerIcon width to {size.x} (multiplier: {data.iconWidthMultiplier}).", towerIcon);
+            }
+            Debug.Log($"Updated TowerIcon to {data.towerSprite?.name ?? "None"}, Enabled: {towerIcon.enabled}.", towerIcon);
         }
         if (descriptionText != null)
         {
             descriptionText.text = data.description;
-            Debug.Log($"Updated DescriptionText to: {data.description}.", descriptionText);
+            descriptionText.enabled = !string.IsNullOrEmpty(data.description);
+            needsCanvasUpdate = true;
+            Debug.Log($"Updated DescriptionText to: '{data.description}', Enabled: {descriptionText.enabled}, Name: {descriptionText.name}.", descriptionText);
         }
         if (data.costLabel != null)
         {
             data.costLabel.text = data.cost.ToString();
-            bool canAfford = gameManager != null && gameManager.HasEnoughCurrency(data.cost);
-            data.costLabel.color = canAfford ? Color.white : Color.red;
-            Debug.Log($"Updated CostLabel to: {data.cost}, Color: {data.costLabel.color}.", data.costLabel);
+            Debug.Log($"Updated CostLabel to: {data.cost}.", data.costLabel);
         }
         if (data.towerButton != null)
         {
             data.towerButton.gameObject.SetActive(true);
-            RectTransform buttonRect = data.towerButton.GetComponent<RectTransform>();
-            if (buttonRect == null)
-            {
-                buttonRect = data.towerButton.gameObject.AddComponent<RectTransform>();
-                Debug.Log($"Added RectTransform to tower button: {data.towerButton.name}.", data.towerButton);
-            }
-            buttonRect.sizeDelta = new Vector2(100, 30);
-            buttonRect.anchoredPosition = new Vector2(0, -100); // Below description
-            data.towerButton.transform.SetParent(shopPanel.transform, false);
             data.towerButton.onClick.RemoveAllListeners();
             data.towerButton.onClick.AddListener(() => SelectTower(currentTowerIndex));
-            Debug.Log($"Updated tower button: {data.towerButton.name}, Position: {buttonRect.anchoredPosition}.", data.towerButton);
+            data.towerButton.enabled = true;
+            data.towerButton.interactable = true;
+            Debug.Log($"Updated tower button: {data.towerButton.name}, Active: {data.towerButton.gameObject.activeSelf}.", data.towerButton);
         }
         else
         {
@@ -282,7 +326,6 @@ public class Shop : MonoBehaviour
             {
                 shopPanelAnimator?.ClosePanel();
                 tilemapManager?.CancelPlacement();
-                // Deactivate current button when closing
                 if (currentTowerIndex >= 0 && currentTowerIndex < Towers.Length && Towers[currentTowerIndex].towerButton != null)
                 {
                     Towers[currentTowerIndex].towerButton.gameObject.SetActive(false);
@@ -328,9 +371,7 @@ public class Shop : MonoBehaviour
             if (data.costLabel != null)
             {
                 data.costLabel.text = data.cost.ToString();
-                bool canAfford = gameManager != null && gameManager.HasEnoughCurrency(data.cost);
-                data.costLabel.color = canAfford ? Color.white : Color.red;
-                Debug.Log($"Updated cost label for {data.towerPrefab?.name}: {data.cost}, Color: {data.costLabel.color}", this);
+                Debug.Log($"Updated cost label for {data.towerPrefab?.name}: {data.cost}", this);
             }
         }
     }
