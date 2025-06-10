@@ -3942,6 +3942,7 @@ GameObject:
   - component: {fileID: 775425094}
   - component: {fileID: 775425093}
   - component: {fileID: 775425092}
+  - component: {fileID: 775425095}
   m_Layer: 5
   m_Name: continue
   m_TagString: Untagged
@@ -4025,6 +4026,30 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1046283597}
+        m_TargetAssemblyTypeName: UnityEngine.UI.Image, UnityEngine.UI
+        m_MethodName: set_sprite
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 21300000, guid: b59cf3ca3c4a4b44db028ceec62f9219, type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Sprite, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 775425095}
+        m_TargetAssemblyTypeName: PauseButton, Assembly-CSharp
+        m_MethodName: Unfreeze
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &775425093
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4063,6 +4088,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 775425090}
   m_CullTransparentMesh: 1
+--- !u!114 &775425095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 775425090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af2086b0d3cc369429de08bce4b71829, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &777350997
 GameObject:
   m_ObjectHideFlags: 0
@@ -5890,6 +5927,7 @@ GameObject:
   - component: {fileID: 1046283598}
   - component: {fileID: 1046283597}
   - component: {fileID: 1046283596}
+  - component: {fileID: 1046283599}
   m_Layer: 5
   m_Name: pause knop
   m_TagString: Untagged
@@ -5972,6 +6010,30 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 1046283597}
+        m_TargetAssemblyTypeName: UnityEngine.UI.Image, UnityEngine.UI
+        m_MethodName: set_sprite
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 21300000, guid: 977a86ce1af3295498dc2eb1dfa898d7, type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Sprite, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 1046283599}
+        m_TargetAssemblyTypeName: PauseButton, Assembly-CSharp
+        m_MethodName: Freeze
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &1046283597
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6010,6 +6072,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1046283594}
   m_CullTransparentMesh: 1
+--- !u!114 &1046283599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1046283594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af2086b0d3cc369429de08bce4b71829, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1084592530
 GameObject:
   m_ObjectHideFlags: 0
