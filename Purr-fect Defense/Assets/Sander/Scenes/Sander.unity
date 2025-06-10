@@ -1073,7 +1073,7 @@ MonoBehaviour:
     towerSprite: {fileID: 21300000, guid: 61345ad53cdb4f240b06547a91b05381, type: 3}
     description: Shoots hairballs at enemies
     resellPrice: 50
-    iconWidthMultiplier: 1
+    iconWidthMultiplier: 2
   - towerPrefab: {fileID: 6915509743750913567, guid: 348d1461542cca2428da3903618916d1, type: 3}
     cost: 75
     towerButton: {fileID: 990660746}
@@ -1081,7 +1081,7 @@ MonoBehaviour:
     towerSprite: {fileID: 21300000, guid: 2305c50cc2b35544f840a4632e64cab6, type: 3}
     description: Scratches enemies along the path
     resellPrice: 35
-    iconWidthMultiplier: 1
+    iconWidthMultiplier: 2
   - towerPrefab: {fileID: 3460794974277552391, guid: ff90f031c520eae429c417242972d73b, type: 3}
     cost: 75
     towerButton: {fileID: 948833501}
@@ -1089,7 +1089,7 @@ MonoBehaviour:
     towerSprite: {fileID: 21300000, guid: d5261280d21f47346ad124ac4b4368d8, type: 3}
     description: Blocks enemies from walking down the path
     resellPrice: 35
-    iconWidthMultiplier: 1
+    iconWidthMultiplier: 2
   - towerPrefab: {fileID: 3189044561415197850, guid: 0a2df9e00c8bccb4fbe014f1dbd043ab, type: 3}
     cost: 200
     towerButton: {fileID: 551634592}
@@ -1097,7 +1097,7 @@ MonoBehaviour:
     towerSprite: {fileID: 21300000, guid: 568b37c3b44668341a767fc44ce51d94, type: 3}
     description: Generates fish bones over time
     resellPrice: 50
-    iconWidthMultiplier: 2
+    iconWidthMultiplier: 4
   descriptionFont: {fileID: 11400000, guid: f9c602230db142742af2fc70a2d6f992, type: 2}
   baseIconWidth: 80
 --- !u!4 &230558821
@@ -2641,8 +2641,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 120, y: -250}
-  m_SizeDelta: {x: 380, y: 40}
+  m_AnchoredPosition: {x: 208, y: -250}
+  m_SizeDelta: {x: 280, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &495637191
 MonoBehaviour:
@@ -2674,7 +2674,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2691,14 +2691,14 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 14
-  m_fontSizeBase: 14
+  m_fontSize: 16
+  m_fontSizeBase: 16
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
