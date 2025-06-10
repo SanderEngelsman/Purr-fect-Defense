@@ -245,7 +245,7 @@ public class Shop : MonoBehaviour
                 Debug.Log($"Added RectTransform to tower button: {data.towerButton.name}.", data.towerButton);
             }
             buttonRect.sizeDelta = new Vector2(100, 30);
-            buttonRect.anchoredPosition = new Vector2(0, 100 - 80 / 2 - 40 - entrySpacing * 2 - 30 / 2); // Below description
+            buttonRect.anchoredPosition = new Vector2(0, -100); // Below description
             data.towerButton.transform.SetParent(shopPanel.transform, false);
             data.towerButton.onClick.RemoveAllListeners();
             data.towerButton.onClick.AddListener(() => SelectTower(currentTowerIndex));
