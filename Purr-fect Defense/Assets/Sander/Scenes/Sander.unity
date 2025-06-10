@@ -1121,6 +1121,8 @@ MonoBehaviour:
     description: Generates fish bones over time
     resellPrice: 50
   contentParent: {fileID: 2099047022}
+  entrySpacing: 20
+  entryPadding: 5
 --- !u!4 &230558821
 Transform:
   m_ObjectHideFlags: 0
@@ -12525,7 +12527,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -26841.535, y: -146697}
+  m_AnchoredPosition: {x: -40313.035, y: -164694}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &2099047023
@@ -12559,10 +12561,10 @@ MonoBehaviour:
     m_Right: 10
     m_Top: 10
     m_Bottom: 10
-  m_ChildAlignment: 1
+  m_ChildAlignment: 4
   m_Spacing: 5
   m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 0
+  m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
