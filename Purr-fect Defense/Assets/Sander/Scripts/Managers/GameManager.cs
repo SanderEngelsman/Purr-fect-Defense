@@ -9,7 +9,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float startingBaseHealth = 100f;
     [SerializeField] private TextMeshProUGUI currencyLabel;
     [SerializeField] private TextMeshProUGUI baseHealthLabel;
-    [SerializeField] private GameEndManager gameEndManager; // Added reference
+    [SerializeField] private GameEndManager gameEndManager;
+    [SerializeField] private SpriteRenderer baseSpriteRenderer; // Base sprite
+    [SerializeField] private Sprite[] baseHealthSprites; // Sprites for 100, 90, ..., 10 HP
     private float currency;
     private float baseHealth;
 
@@ -21,6 +23,10 @@ public class GameManager : MonoBehaviour
             Debug.LogWarning("BaseHealthLabel not assigned in GameManager.", this);
         if (gameEndManager == null)
             Debug.LogWarning("GameEndManager not assigned in GameManager.", this);
+        if (baseSpriteRenderer == null)
+            Debug.LogWarning("BaseSpriteRenderer not assigned in GameManager.", this);
+        if (baseHealthSprites == null || baseHealthSprites.Length != 10)
+            Debug.LogWarning("BaseHealthSprites array should contain 10 sprites (100 to 10 HP).", this);
     }
 
     private void Start()
@@ -29,6 +35,7 @@ public class GameManager : MonoBehaviour
         baseHealth = startingBaseHealth;
         UpdateCurrencyLabel();
         UpdateBaseHealthLabel();
+        UpdateBaseSprite(); // Set initial sprite
     }
 
     public void AddCurrency(float amount)
@@ -57,6 +64,7 @@ public class GameManager : MonoBehaviour
     {
         baseHealth -= damage;
         UpdateBaseHealthLabel();
+        UpdateBaseSprite(); // Update sprite based on health
         if (baseHealth <= 0)
         {
             GameOver();
@@ -87,6 +95,40 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogWarning("BaseHealthLabel is null in GameManager.", this);
         }
+    }
+
+    private void UpdateBaseSprite()
+    {
+        if (baseSpriteRenderer == null || baseHealthSprites == null || baseHealthSprites.Length != 10)
+            return;
+
+        int health = Mathf.FloorToInt(baseHealth);
+        int index;
+
+        // Map health to sprite index: 100 -> 0, 90 -> 1, ..., 10 -> 9
+        if (health > 90)
+            index = 0; // 100 HP
+        else if (health > 80)
+            index = 1; // 90 HP
+        else if (health > 70)
+            index = 2; // 80 HP
+        else if (health > 60)
+            index = 3; // 70 HP
+        else if (health > 50)
+            index = 4; // 60 HP
+        else if (health > 40)
+            index = 5; // 50 HP
+        else if (health > 30)
+            index = 6; // 40 HP
+        else if (health > 20)
+            index = 7; // 30 HP
+        else if (health > 10)
+            index = 8; // 20 HP
+        else
+            index = 9; // 10 HP or less
+
+        baseSpriteRenderer.sprite = baseHealthSprites[index];
+        Debug.Log($"Base sprite updated to index {index} for health {health}", this);
     }
 
     private void GameOver()

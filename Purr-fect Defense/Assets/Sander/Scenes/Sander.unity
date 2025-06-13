@@ -4030,6 +4030,18 @@ MonoBehaviour:
   currencyLabel: {fileID: 15796849}
   baseHealthLabel: {fileID: 1398716017}
   gameEndManager: {fileID: 892352157}
+  baseSpriteRenderer: {fileID: 1084592531}
+  baseHealthSprites:
+  - {fileID: 21300000, guid: f43bea48ad5c76f409cbe495c7be26e8, type: 3}
+  - {fileID: 21300000, guid: 63cf4adb611ec0642a2ca8b3a1675b92, type: 3}
+  - {fileID: 21300000, guid: 212a95b2f93d0c6438c1b585a9512119, type: 3}
+  - {fileID: 21300000, guid: 8852ea3b772d16745b2da62e9927ba59, type: 3}
+  - {fileID: 21300000, guid: 8302037a556ecba42b566f9a9577e772, type: 3}
+  - {fileID: 21300000, guid: 49c81fef666920c479753832a61a79b2, type: 3}
+  - {fileID: 21300000, guid: 57062f95e0540c846ac4ca23c9127922, type: 3}
+  - {fileID: 21300000, guid: 39a63e8e41bcc9949a80b836973bfac4, type: 3}
+  - {fileID: 21300000, guid: 08821660628ce2b48a3ba200118c22f1, type: 3}
+  - {fileID: 21300000, guid: ff09a818da04f1c489f6d66f41f331cd, type: 3}
 --- !u!4 &777350999
 Transform:
   m_ObjectHideFlags: 0
