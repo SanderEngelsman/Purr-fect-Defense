@@ -1175,7 +1175,7 @@ MonoBehaviour:
     towerButton: {fileID: 1392152872}
     costLabel: {fileID: 442154596}
     towerSprite: {fileID: 21300000, guid: 61345ad53cdb4f240b06547a91b05381, type: 3}
-    description: Shoots hairballs at enemies
+    description: Luna - Shoots hairballs at enemies
     resellPrice: 50
     iconWidthMultiplier: 2
   - towerPrefab: {fileID: 6915509743750913567, guid: 348d1461542cca2428da3903618916d1, type: 3}
@@ -1183,7 +1183,7 @@ MonoBehaviour:
     towerButton: {fileID: 990660746}
     costLabel: {fileID: 292759952}
     towerSprite: {fileID: 21300000, guid: 2305c50cc2b35544f840a4632e64cab6, type: 3}
-    description: Scratches enemies along the path
+    description: Jojo - Scratches enemies along the path
     resellPrice: 35
     iconWidthMultiplier: 2
   - towerPrefab: {fileID: 3460794974277552391, guid: ff90f031c520eae429c417242972d73b, type: 3}
@@ -1191,7 +1191,7 @@ MonoBehaviour:
     towerButton: {fileID: 948833501}
     costLabel: {fileID: 445087263}
     towerSprite: {fileID: 21300000, guid: d5261280d21f47346ad124ac4b4368d8, type: 3}
-    description: Blocks enemies from walking down the path
+    description: Charlie - Blocks enemies on the path
     resellPrice: 35
     iconWidthMultiplier: 2
   - towerPrefab: {fileID: 3189044561415197850, guid: 0a2df9e00c8bccb4fbe014f1dbd043ab, type: 3}
@@ -1199,7 +1199,7 @@ MonoBehaviour:
     towerButton: {fileID: 551634592}
     costLabel: {fileID: 585197236}
     towerSprite: {fileID: 21300000, guid: 568b37c3b44668341a767fc44ce51d94, type: 3}
-    description: Generates fish bones over time
+    description: Spencer - Generates fish bones over time
     resellPrice: 50
     iconWidthMultiplier: 4
   descriptionFont: {fileID: 11400000, guid: f9c602230db142742af2fc70a2d6f992, type: 2}
@@ -1598,8 +1598,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -143.23}
+  m_SizeDelta: {x: 0, y: -67.155}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &292759952
 MonoBehaviour:
@@ -2402,8 +2402,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -143.23}
+  m_SizeDelta: {x: 0, y: 152.15}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &442154596
 MonoBehaviour:
@@ -2425,7 +2425,13 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 100
+  m_text: 'Luna
+
+
+    Shoots hairballs at enemies
+
+
+    100'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f9c602230db142742af2fc70a2d6f992, type: 2}
   m_sharedMaterial: {fileID: 2753440955074568706, guid: f9c602230db142742af2fc70a2d6f992, type: 2}
@@ -2536,8 +2542,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -143.23}
+  m_SizeDelta: {x: 0, y: -67.155}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &445087263
 MonoBehaviour:
@@ -2990,8 +2996,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -150}
-  m_SizeDelta: {x: 100, y: 50}
+  m_AnchoredPosition: {x: 0, y: 3.3}
+  m_SizeDelta: {x: 317.7, y: 317.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &551634592
 MonoBehaviour:
@@ -3121,8 +3127,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -143.23}
+  m_SizeDelta: {x: 0, y: -67.155}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &585197236
 MonoBehaviour:
@@ -4465,8 +4471,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -150}
-  m_SizeDelta: {x: 100, y: 50}
+  m_AnchoredPosition: {x: 0, y: 3.3}
+  m_SizeDelta: {x: 317.7, y: 317.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &948833501
 MonoBehaviour:
@@ -5363,8 +5369,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -150}
-  m_SizeDelta: {x: 100, y: 50}
+  m_AnchoredPosition: {x: 0, y: 3.3}
+  m_SizeDelta: {x: 317.7, y: 317.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &990660746
 MonoBehaviour:
@@ -7988,8 +7994,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -150}
-  m_SizeDelta: {x: 100, y: 30}
+  m_AnchoredPosition: {x: 0, y: 3.3}
+  m_SizeDelta: {x: 317.7, y: 317.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1392152872
 MonoBehaviour:
