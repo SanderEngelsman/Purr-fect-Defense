@@ -29,7 +29,7 @@ public class ShieldTower : MonoBehaviour
         }
         if (health <= 0)
         {
-            Vector3Int cellPos = tilemapManager.placementTilemap.WorldToCell(transform.position);
+            Vector3Int cellPos = tilemapManager.PathTilemap.WorldToCell(transform.position);
             tilemapManager.RemoveTower(cellPos);
             Destroy(gameObject);
         }

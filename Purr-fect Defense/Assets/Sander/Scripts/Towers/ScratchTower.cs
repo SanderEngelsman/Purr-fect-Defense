@@ -3,6 +3,23 @@ using UnityEngine;
 public class ScratchTower : Tower
 {
     [SerializeField] private GameObject scratchEffectPrefab; // Effect prefab
+    private bool faceRight = false; // Set by TilemapManager during placement
+
+    // Called by TilemapManager after instantiation
+    public void SetFacingDirection(bool shouldFaceRight)
+    {
+        faceRight = shouldFaceRight;
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.flipX = faceRight;
+            Debug.Log($"ScratchTower set to face {(faceRight ? "right" : "left")}", this);
+        }
+        else
+        {
+            Debug.LogWarning("SpriteRenderer not found on ScratchTower.", this);
+        }
+    }
 
     public override void FindTarget()
     {
@@ -44,7 +61,6 @@ public class ScratchTower : Tower
                 enemy.TakeDamage(damage);
                 if (scratchEffectPrefab != null)
                 {
-                    // Instantiate effect at enemy's position
                     Vector3 effectPosition = target.transform.position;
                     effectPosition.z = -1f; // Ensure above enemy sprite
                     Instantiate(scratchEffectPrefab, effectPosition, Quaternion.identity);

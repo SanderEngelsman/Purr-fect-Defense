@@ -211,9 +211,23 @@ public class TowerSelector : MonoBehaviour
             // Second click: Sell tower
             if (tilemapManager != null)
             {
-                // Use pathTilemap for ShieldTower, placementTilemap for others
-                Tilemap targetTilemap = selectedTower.GetComponent<ShieldTower>() != null ?
-                    tilemapManager.pathTilemap : tilemapManager.placementTilemap;
+                // Select tilemap based on tower type
+                Tilemap targetTilemap;
+                if (selectedTower.GetComponent<ShieldTower>() != null)
+                {
+                    targetTilemap = tilemapManager.PathTilemap;
+                }
+                else if (selectedTower.GetComponent<ScratchTower>() != null)
+                {
+                    // Check if ScratchTower is on rightFacingScratchTowerMap
+                    Vector3Int cellPos = tilemapManager.RightFacingScratchTowerMap.WorldToCell(selectedTower.transform.position);
+                    targetTilemap = tilemapManager.RightFacingScratchTowerMap.HasTile(cellPos) ?
+                        tilemapManager.RightFacingScratchTowerMap : tilemapManager.PlacementTilemap;
+                }
+                else
+                {
+                    targetTilemap = tilemapManager.PlacementTilemap;
+                }
                 Vector3Int tilePos = targetTilemap.WorldToCell(selectedTower.transform.position);
                 tilemapManager.RemoveTower(tilePos);
             }
