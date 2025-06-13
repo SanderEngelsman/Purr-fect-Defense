@@ -24,6 +24,9 @@ public class WaveManager : MonoBehaviour
 
     public bool IsPreGame => isPreGame;
     public bool IsWaveActive => isWaveActive;
+    public int WavesLength => waves.Length; // Expose waves length
+    public int CurrentWave => currentWave; // Expose current wave
+    public int ActiveEnemiesCount => activeEnemies.Count; // Expose enemy count
 
     private void OnValidate()
     {

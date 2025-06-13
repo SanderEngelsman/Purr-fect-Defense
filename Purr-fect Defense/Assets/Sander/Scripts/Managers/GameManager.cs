@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float startingBaseHealth = 100f;
     [SerializeField] private TextMeshProUGUI currencyLabel;
     [SerializeField] private TextMeshProUGUI baseHealthLabel;
+    [SerializeField] private GameEndManager gameEndManager; // Added reference
     private float currency;
     private float baseHealth;
 
@@ -18,6 +19,8 @@ public class GameManager : MonoBehaviour
             Debug.LogWarning("CurrencyLabel not assigned in GameManager.", this);
         if (baseHealthLabel == null)
             Debug.LogWarning("BaseHealthLabel not assigned in GameManager.", this);
+        if (gameEndManager == null)
+            Debug.LogWarning("GameEndManager not assigned in GameManager.", this);
     }
 
     private void Start()
@@ -64,7 +67,7 @@ public class GameManager : MonoBehaviour
     {
         if (currencyLabel != null)
         {
-            currencyLabel.text = Mathf.FloorToInt(currency).ToString(); // Display number only
+            currencyLabel.text = Mathf.FloorToInt(currency).ToString();
             Debug.Log($"Currency UI updated: {currencyLabel.text}", this);
         }
         else
@@ -77,7 +80,7 @@ public class GameManager : MonoBehaviour
     {
         if (baseHealthLabel != null)
         {
-            baseHealthLabel.text = Mathf.FloorToInt(baseHealth).ToString(); // Display number only
+            baseHealthLabel.text = Mathf.FloorToInt(baseHealth).ToString();
             Debug.Log($"Health UI updated: {baseHealthLabel.text}", this);
         }
         else
@@ -89,6 +92,14 @@ public class GameManager : MonoBehaviour
     private void GameOver()
     {
         Debug.Log("Game Over!");
+        if (gameEndManager != null)
+        {
+            gameEndManager.TriggerLoseScreen();
+        }
+        else
+        {
+            Debug.LogWarning("GameEndManager is null in GameManager.", this);
+        }
         Time.timeScale = 0;
     }
 }
