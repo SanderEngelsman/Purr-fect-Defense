@@ -2,13 +2,13 @@ using UnityEngine;
 
 public abstract class Tower : MonoBehaviour
 {
-    [SerializeField] public float range = 3f;
-    [SerializeField] public float attackSpeed = 1f;
-    [SerializeField] public float damage = 10f;
-    public float attackTimer = 0f;
+    [SerializeField] public float range;
+    [SerializeField] public float attackSpeed;
+    [SerializeField] public float damage;
+    public float attackTimer;
     public GameObject target;
     public bool isStunned = false;
-    public float stunTimer = 0f;
+    public float stunTimer; 
     private SpriteRenderer spriteRenderer;
     private Color originalColor;
     private Animator animator; // Added for animation control
