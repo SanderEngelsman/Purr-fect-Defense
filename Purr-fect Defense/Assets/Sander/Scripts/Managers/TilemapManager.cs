@@ -7,21 +7,20 @@ public class TilemapManager : MonoBehaviour
 {
     [SerializeField] private Tilemap placementTilemap;
     [SerializeField] private Tilemap pathTilemap;
-    [SerializeField] private Tilemap rightFacingScratchTowerMap; // New tilemap for right-facing ScratchTower
+    [SerializeField] private Tilemap rightFacingScratchTowerMap;
     private GameObject towerToPlace;
     private float towerCost;
     private Dictionary<Vector3Int, GameObject> placedTowers = new Dictionary<Vector3Int, GameObject>();
     private GameObject previewTower;
     private RangeVisualizer previewRangeVisualizer;
     private Vector3Int lastHighlightedCell;
-    private Vector3Int lastHighlightedLeftCell; // For GeneratorTower's left tile
+    private Vector3Int lastHighlightedLeftCell;
     private GameManager gameManager;
-    private static int towerOrderCounter = 0; // Tracks tower placement order
+    private static int towerOrderCounter = 0;
 
-    // Public read-only properties
     public Tilemap PlacementTilemap => placementTilemap;
     public Tilemap PathTilemap => pathTilemap;
-    public Tilemap RightFacingScratchTowerMap => rightFacingScratchTowerMap; // Optional, if needed
+    public Tilemap RightFacingScratchTowerMap => rightFacingScratchTowerMap;
 
     private void OnValidate()
     {
@@ -40,13 +39,12 @@ public class TilemapManager : MonoBehaviour
 
     public void StartPlacingTower(GameObject towerPrefab, float cost)
     {
-        CancelPlacement(); // Clear any existing selection
+        CancelPlacement();
         towerToPlace = towerPrefab;
         towerCost = cost;
         if (towerToPlace != null)
         {
             previewTower = Instantiate(towerPrefab, Vector3.zero, Quaternion.identity);
-            // Disable tower scripts
             MonoBehaviour[] scripts = previewTower.GetComponents<MonoBehaviour>();
             foreach (var script in scripts)
             {
@@ -55,13 +53,12 @@ public class TilemapManager : MonoBehaviour
             SpriteRenderer renderer = previewTower.GetComponent<SpriteRenderer>();
             if (renderer != null)
             {
-                renderer.color = new Color(1f, 1f, 1f, 0.6f); // Semi-transparent
+                renderer.color = new Color(1f, 1f, 1f, 0.6f);
             }
             else
             {
                 Debug.LogWarning($"Preview tower {towerPrefab.name} missing SpriteRenderer.", this);
             }
-            // Add range visualizer for attacking towers
             Tower tower = previewTower.GetComponent<Tower>();
             if (tower != null && CanAttack(tower))
             {
@@ -93,23 +90,21 @@ public class TilemapManager : MonoBehaviour
         if (towerToPlace != null)
         {
             Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            worldPos.z = 0; // Ensure z is 0 for 2D
+            worldPos.z = 0;
             bool isShieldTower = towerToPlace.GetComponent<ShieldTower>() != null;
             bool isGeneratorTower = towerToPlace.GetComponent<GeneratorTower>() != null;
             bool isScratchTower = towerToPlace.GetComponent<ScratchTower>() != null;
             Tilemap targetTilemap = isShieldTower ? pathTilemap : (isScratchTower ? GetScratchTowerTilemap(worldPos) : placementTilemap);
             Tilemap otherTilemap = isShieldTower ? placementTilemap : pathTilemap;
             Vector3Int cellPos = targetTilemap.WorldToCell(worldPos);
-            Vector3Int leftCellPos = cellPos + Vector3Int.left; // Left tile for GeneratorTower
+            Vector3Int leftCellPos = cellPos + Vector3Int.left;
 
-            // Update preview position
             if (previewTower != null)
             {
                 Vector3 previewPos = isGeneratorTower ?
-                    targetTilemap.GetCellCenterWorld(cellPos) - new Vector3(0.5f, 0, 0) : // Center between two tiles
-                    targetTilemap.GetCellCenterWorld(cellPos); // Single tile
+                    targetTilemap.GetCellCenterWorld(cellPos) - new Vector3(0.5f, 0, 0) :
+                    targetTilemap.GetCellCenterWorld(cellPos);
                 previewTower.transform.position = new Vector3(previewPos.x, previewPos.y, 0);
-                // Set preview facing for ScratchTower
                 if (isScratchTower)
                 {
                     ScratchTower scratchTower = previewTower.GetComponent<ScratchTower>();
@@ -121,7 +116,6 @@ public class TilemapManager : MonoBehaviour
                 }
             }
 
-            // Highlight tiles
             ClearHighlight();
             bool canPlace = IsValidPlacementPosition(cellPos, isShieldTower, isGeneratorTower, isScratchTower);
             if (isGeneratorTower)
@@ -131,11 +125,9 @@ public class TilemapManager : MonoBehaviour
 
             if (canPlace)
             {
-                // Highlight primary tile
                 targetTilemap.SetTileFlags(cellPos, TileFlags.None);
                 targetTilemap.SetColor(cellPos, Color.green);
                 lastHighlightedCell = cellPos;
-                // Highlight left tile for GeneratorTower
                 if (isGeneratorTower)
                 {
                     targetTilemap.SetTileFlags(leftCellPos, TileFlags.None);
@@ -154,7 +146,6 @@ public class TilemapManager : MonoBehaviour
                           $"Sufficient currency: {gameManager.HasEnoughCurrency(towerCost)}", this);
             }
 
-            // Place tower
             if (Input.GetMouseButtonDown(0))
             {
                 if (canPlace)
@@ -163,7 +154,6 @@ public class TilemapManager : MonoBehaviour
                         targetTilemap.GetCellCenterWorld(cellPos) - new Vector3(0.5f, 0, 0) :
                         targetTilemap.GetCellCenterWorld(cellPos);
                     GameObject tower = Instantiate(towerToPlace, placePos, Quaternion.identity);
-                    // Set facing for ScratchTower
                     if (isScratchTower)
                     {
                         ScratchTower scratchTower = tower.GetComponent<ScratchTower>();
@@ -173,7 +163,6 @@ public class TilemapManager : MonoBehaviour
                             scratchTower.SetFacingDirection(faceRight);
                         }
                     }
-                    // Assign placement order for layering
                     ZLayering zLayering = tower.GetComponent<ZLayering>();
                     if (zLayering != null)
                     {
@@ -184,12 +173,13 @@ public class TilemapManager : MonoBehaviour
                     {
                         Debug.LogWarning($"Tower {tower.name} missing ZLayering component.", tower);
                     }
-                    gameManager.RemoveCurrency(towerCost); // Deduct currency
+                    gameManager.RemoveCurrency(towerCost);
                     placedTowers.Add(cellPos, tower);
                     if (isGeneratorTower)
                     {
-                        placedTowers.Add(leftCellPos, tower); // Reserve left tile
+                        placedTowers.Add(leftCellPos, tower);
                     }
+                    AudioManager.Instance?.PlayTowerPlaceSound();
                     ClearPreview();
                     towerToPlace = null;
                     towerCost = 0f;
@@ -200,7 +190,6 @@ public class TilemapManager : MonoBehaviour
                 }
             }
 
-            // Cancel placement
             if (Input.GetMouseButtonDown(1))
             {
                 CancelPlacement();
@@ -249,13 +238,11 @@ public class TilemapManager : MonoBehaviour
         {
             GameObject tower = placedTowers[cellPos];
             placedTowers.Remove(cellPos);
-            // Remove associated left tile for GeneratorTower
             Vector3Int leftCellPos = cellPos + Vector3Int.left;
             if (placedTowers.ContainsKey(leftCellPos) && placedTowers[leftCellPos] == tower)
             {
                 placedTowers.Remove(leftCellPos);
             }
-            // Check right tile in case tower was stored under left tile
             Vector3Int rightCellPos = cellPos + Vector3Int.right;
             if (placedTowers.ContainsKey(rightCellPos) && placedTowers[rightCellPos] == tower)
             {
@@ -310,7 +297,6 @@ public class TilemapManager : MonoBehaviour
 
     private bool CanAttack(Tower tower)
     {
-        // Exclude GeneratorTower and ShieldTower
         return tower is ProjectileTower || tower is ScratchTower;
     }
 }

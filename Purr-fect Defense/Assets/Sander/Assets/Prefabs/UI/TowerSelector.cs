@@ -53,7 +53,6 @@ public class TowerSelector : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            // Ignore clicks on UI elements
             if (EventSystem.current.IsPointerOverGameObject())
             {
                 Debug.Log("Click on UI element (e.g., SellButton), ignoring for tower selection.");
@@ -66,7 +65,6 @@ public class TowerSelector : MonoBehaviour
 
             if (hit.collider != null)
             {
-                // Check for any tower type
                 if (hit.collider.GetComponent<Tower>() ||
                     hit.collider.GetComponent<ShieldTower>() ||
                     hit.collider.GetComponent<GeneratorTower>())
@@ -88,7 +86,6 @@ public class TowerSelector : MonoBehaviour
             }
         }
 
-        // Update sell button position if tower is selected
         if (selectedTower != null && sellButton != null)
         {
             Vector3 towerPos = selectedTower.transform.position;
@@ -109,10 +106,9 @@ public class TowerSelector : MonoBehaviour
             return;
         }
 
-        DeselectTower(); // Clear previous selection
+        DeselectTower();
         selectedTower = tower;
 
-        // Add RangeVisualizer only for towers with Tower component and valid range
         Tower towerComponent = tower.GetComponent<Tower>();
         if (towerComponent != null && towerComponent.range > 0)
         {
@@ -147,7 +143,6 @@ public class TowerSelector : MonoBehaviour
         {
             sellButton.gameObject.SetActive(true);
             sellButtonText.text = "Sell";
-            // Reset button color
             var colors = sellButton.colors;
             colors.normalColor = Color.white;
             sellButton.colors = colors;
@@ -183,9 +178,10 @@ public class TowerSelector : MonoBehaviour
             return;
         }
 
+        AudioManager.Instance?.PlayButtonClickSound();
+
         if (!isSellConfirm)
         {
-            // First click: Confirm state
             sellRefundAmount = CalculateRefund(selectedTower);
             if (sellRefundAmount <= 0)
             {
@@ -200,7 +196,7 @@ public class TowerSelector : MonoBehaviour
             if (sellButton != null)
             {
                 var colors = sellButton.colors;
-                colors.normalColor = new Color(0.7f, 0.7f, 0.7f); // Gray for pressed
+                colors.normalColor = new Color(0.7f, 0.7f, 0.7f);
                 sellButton.colors = colors;
             }
             isSellConfirm = true;
@@ -208,10 +204,8 @@ public class TowerSelector : MonoBehaviour
         }
         else
         {
-            // Second click: Sell tower
             if (tilemapManager != null)
             {
-                // Select tilemap based on tower type
                 Tilemap targetTilemap;
                 if (selectedTower.GetComponent<ShieldTower>() != null)
                 {
@@ -219,7 +213,6 @@ public class TowerSelector : MonoBehaviour
                 }
                 else if (selectedTower.GetComponent<ScratchTower>() != null)
                 {
-                    // Check if ScratchTower is on rightFacingScratchTowerMap
                     Vector3Int cellPos = tilemapManager.RightFacingScratchTowerMap.WorldToCell(selectedTower.transform.position);
                     targetTilemap = tilemapManager.RightFacingScratchTowerMap.HasTile(cellPos) ?
                         tilemapManager.RightFacingScratchTowerMap : tilemapManager.PlacementTilemap;

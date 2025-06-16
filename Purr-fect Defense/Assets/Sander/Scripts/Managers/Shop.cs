@@ -221,7 +221,6 @@ public class Shop : MonoBehaviour
             Debug.Log($"Applied font {descriptionFont.name} to DescriptionText ({descriptionText.name}).", descriptionText);
         }
 
-        // Ensure all tower buttons are parented and inactive
         foreach (var data in Towers)
         {
             if (data.towerButton != null)
@@ -246,7 +245,6 @@ public class Shop : MonoBehaviour
     private void CycleTower(int direction)
     {
         if (Towers == null || Towers.Length == 0) return;
-        // Deactivate current button
         if (currentTowerIndex >= 0 && currentTowerIndex < Towers.Length && Towers[currentTowerIndex].towerButton != null)
         {
             Towers[currentTowerIndex].towerButton.gameObject.SetActive(false);
@@ -346,6 +344,7 @@ public class Shop : MonoBehaviour
             Debug.LogError($"Invalid tower index: {index}.", this);
             return;
         }
+        AudioManager.Instance?.PlayButtonClickSound();
         if (!gameManager.HasEnoughCurrency(Towers[index].cost))
         {
             Debug.Log($"Not enough currency to select {Towers[index].towerPrefab?.name}. Required: {Towers[index].cost}", this);

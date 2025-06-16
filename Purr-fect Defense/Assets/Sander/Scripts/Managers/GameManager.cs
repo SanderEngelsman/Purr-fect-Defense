@@ -10,8 +10,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI currencyLabel;
     [SerializeField] private TextMeshProUGUI baseHealthLabel;
     [SerializeField] private GameEndManager gameEndManager;
-    [SerializeField] private SpriteRenderer baseSpriteRenderer; // Base sprite
-    [SerializeField] private Sprite[] baseHealthSprites; // Sprites for 100, 90, ..., 10 HP
+    [SerializeField] private SpriteRenderer baseSpriteRenderer;
+    [SerializeField] private Sprite[] baseHealthSprites;
     private float currency;
     private float baseHealth;
 
@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
         baseHealth = startingBaseHealth;
         UpdateCurrencyLabel();
         UpdateBaseHealthLabel();
-        UpdateBaseSprite(); // Set initial sprite
+        UpdateBaseSprite();
     }
 
     public void AddCurrency(float amount)
@@ -62,9 +62,10 @@ public class GameManager : MonoBehaviour
 
     public void TakeBaseDamage(float damage)
     {
+        AudioManager.Instance?.PlayBaseAttackSound();
         baseHealth -= damage;
         UpdateBaseHealthLabel();
-        UpdateBaseSprite(); // Update sprite based on health
+        UpdateBaseSprite();
         if (baseHealth <= 0)
         {
             GameOver();
@@ -105,27 +106,26 @@ public class GameManager : MonoBehaviour
         int health = Mathf.FloorToInt(baseHealth);
         int index;
 
-        // Map health to sprite index: 100 -> 0, 90 -> 1, ..., 10 -> 9
         if (health > 90)
-            index = 0; // 100 HP
+            index = 0;
         else if (health > 80)
-            index = 1; // 90 HP
+            index = 1;
         else if (health > 70)
-            index = 2; // 80 HP
+            index = 2;
         else if (health > 60)
-            index = 3; // 70 HP
+            index = 3;
         else if (health > 50)
-            index = 4; // 60 HP
+            index = 4;
         else if (health > 40)
-            index = 5; // 50 HP
+            index = 5;
         else if (health > 30)
-            index = 6; // 40 HP
+            index = 6;
         else if (health > 20)
-            index = 7; // 30 HP
+            index = 7;
         else if (health > 10)
-            index = 8; // 20 HP
+            index = 8;
         else
-            index = 9; // 10 HP or less
+            index = 9;
 
         baseSpriteRenderer.sprite = baseHealthSprites[index];
         Debug.Log($"Base sprite updated to index {index} for health {health}", this);
