@@ -178,8 +178,6 @@ public class TowerSelector : MonoBehaviour
             return;
         }
 
-        AudioManager.Instance?.PlayButtonClickSound();
-
         if (!isSellConfirm)
         {
             sellRefundAmount = CalculateRefund(selectedTower);

@@ -344,7 +344,6 @@ public class Shop : MonoBehaviour
             Debug.LogError($"Invalid tower index: {index}.", this);
             return;
         }
-        AudioManager.Instance?.PlayButtonClickSound();
         if (!gameManager.HasEnoughCurrency(Towers[index].cost))
         {
             Debug.Log($"Not enough currency to select {Towers[index].towerPrefab?.name}. Required: {Towers[index].cost}", this);

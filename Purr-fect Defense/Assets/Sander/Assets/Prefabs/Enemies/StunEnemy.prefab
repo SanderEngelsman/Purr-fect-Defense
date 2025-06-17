@@ -117,7 +117,7 @@ MonoBehaviour:
   stunProjectilePrefab: {fileID: 4915182185116532304, guid: cf7c049e359760548a6fe286e0a0a5c9, type: 3}
   stunRange: 5
   stunDuration: 4
-  stunInterval: 4.5
+  stunInterval: 8
   projectileSpeed: 3
 --- !u!114 &-8896418554827730841
 MonoBehaviour:
@@ -171,3 +171,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 742634c5986fd0b4c96490f39a5cdad4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  order: 0
