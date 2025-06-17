@@ -103,6 +103,7 @@ MonoBehaviour:
   range: 2
   attackSpeed: 2.5
   damage: 20
+  stunOverlayPrefab: {fileID: 2701522897926839610, guid: 6e97a6bf0a49790409d8898f47796eb5, type: 3}
   attackTimer: 0
   target: {fileID: 0}
   isStunned: 0

@@ -103,6 +103,7 @@ MonoBehaviour:
   range: 3.5
   attackSpeed: 0.6
   damage: 25
+  stunOverlayPrefab: {fileID: 2701522897926839610, guid: 6e97a6bf0a49790409d8898f47796eb5, type: 3}
   attackTimer: 0
   target: {fileID: 0}
   isStunned: 0
@@ -187,3 +188,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 742634c5986fd0b4c96490f39a5cdad4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  order: 0

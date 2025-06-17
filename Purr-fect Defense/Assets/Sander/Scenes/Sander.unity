@@ -4476,11 +4476,11 @@ MonoBehaviour:
   spawnPoint: {fileID: 1408609373}
   waves:
   - enemies:
-    - {fileID: 4624401258798809816, guid: 5ef5f090217809c49a62a78f9f1bed5d, type: 3}
-    - {fileID: 4624401258798809816, guid: 5ef5f090217809c49a62a78f9f1bed5d, type: 3}
-    - {fileID: 4624401258798809816, guid: 5ef5f090217809c49a62a78f9f1bed5d, type: 3}
-    - {fileID: 4624401258798809816, guid: 5ef5f090217809c49a62a78f9f1bed5d, type: 3}
-    - {fileID: 4624401258798809816, guid: 5ef5f090217809c49a62a78f9f1bed5d, type: 3}
+    - {fileID: 5136582293965461582, guid: 8cd98ced1dacc2a44b41526651d69d1f, type: 3}
+    - {fileID: 5136582293965461582, guid: 8cd98ced1dacc2a44b41526651d69d1f, type: 3}
+    - {fileID: 5136582293965461582, guid: 8cd98ced1dacc2a44b41526651d69d1f, type: 3}
+    - {fileID: 5136582293965461582, guid: 8cd98ced1dacc2a44b41526651d69d1f, type: 3}
+    - {fileID: 5136582293965461582, guid: 8cd98ced1dacc2a44b41526651d69d1f, type: 3}
   - enemies:
     - {fileID: 2992963078866100631, guid: ab55f5fb8ebd43a48bcd53da0a9ec3c9, type: 3}
     - {fileID: 2992963078866100631, guid: ab55f5fb8ebd43a48bcd53da0a9ec3c9, type: 3}
