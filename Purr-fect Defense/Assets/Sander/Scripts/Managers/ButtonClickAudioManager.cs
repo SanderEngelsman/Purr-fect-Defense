@@ -15,11 +15,9 @@ public class ButtonClickAudioManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
         else
         {
-            Destroy(gameObject);
             return;
         }
 

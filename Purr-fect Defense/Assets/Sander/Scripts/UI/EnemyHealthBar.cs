@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,6 +15,10 @@ public class EnemyHealthBar : MonoBehaviour
     [Header("Size Settings")]
     [SerializeField] private float healthbarWidth = 100f;
     [SerializeField] private float healthbarHeight = 10f;
+
+    [Header("Overlay Canvases")]
+    [SerializeField, Tooltip("Canvases that should hide health bars when active (e.g., shop, pause menu)")]
+    private List<GameObject> overlayCanvases = new List<GameObject>();
 
     private Enemy enemy;
     private ShieldTower shieldTower;
@@ -75,6 +78,15 @@ public class EnemyHealthBar : MonoBehaviour
 
     private void OnGUI()
     {
+        // Skip drawing if any overlay canvas is active
+        foreach (var canvas in overlayCanvases)
+        {
+            if (canvas != null && canvas.activeInHierarchy)
+            {
+                return;
+            }
+        }
+
         if (!showHealthbar || (enemy == null && shieldTower == null)) return;
 
         Texture2D damageTexture = new Texture2D(1, 1);
@@ -105,5 +117,21 @@ public class EnemyHealthBar : MonoBehaviour
         Destroy(damageTexture);
         Destroy(healthTexture);
         Destroy(outlineTexture);
+    }
+
+    private void OnValidate()
+    {
+        // Warn about null or duplicate canvases
+        for (int i = 0; i < overlayCanvases.Count; i++)
+        {
+            if (overlayCanvases[i] == null)
+            {
+                Debug.LogWarning($"Overlay canvas at index {i} is null in EnemyHealthBar.", this);
+            }
+            else if (overlayCanvases.IndexOf(overlayCanvases[i]) != i)
+            {
+                Debug.LogWarning($"Duplicate overlay canvas {overlayCanvases[i].name} at index {i} in EnemyHealthBar.", this);
+            }
+        }
     }
 }
