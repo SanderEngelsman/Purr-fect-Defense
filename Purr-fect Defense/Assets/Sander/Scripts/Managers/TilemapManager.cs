@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -94,10 +93,18 @@ public class TilemapManager : MonoBehaviour
             bool isShieldTower = towerToPlace.GetComponent<ShieldTower>() != null;
             bool isGeneratorTower = towerToPlace.GetComponent<GeneratorTower>() != null;
             bool isScratchTower = towerToPlace.GetComponent<ScratchTower>() != null;
-            Tilemap targetTilemap = isShieldTower ? pathTilemap : (isScratchTower ? GetScratchTowerTilemap(worldPos) : placementTilemap);
-            Tilemap otherTilemap = isShieldTower ? placementTilemap : pathTilemap;
+
+            // Determine targetTilemap
+            Tilemap targetTilemap = isShieldTower ? pathTilemap : placementTilemap;
             Vector3Int cellPos = targetTilemap.WorldToCell(worldPos);
             Vector3Int leftCellPos = cellPos + Vector3Int.left;
+
+            // Check rightFacingScratchTowerMap for all towers
+            bool isRightFacingTile = rightFacingScratchTowerMap != null && rightFacingScratchTowerMap.HasTile(cellPos);
+            if (isRightFacingTile && !isShieldTower)
+            {
+                targetTilemap = rightFacingScratchTowerMap;
+            }
 
             if (previewTower != null)
             {
@@ -110,17 +117,17 @@ public class TilemapManager : MonoBehaviour
                     ScratchTower scratchTower = previewTower.GetComponent<ScratchTower>();
                     if (scratchTower != null)
                     {
-                        bool faceRight = rightFacingScratchTowerMap != null && rightFacingScratchTowerMap.HasTile(cellPos);
+                        bool faceRight = isRightFacingTile;
                         scratchTower.SetFacingDirection(faceRight);
                     }
                 }
             }
 
             ClearHighlight();
-            bool canPlace = IsValidPlacementPosition(cellPos, isShieldTower, isGeneratorTower, isScratchTower);
+            bool canPlace = IsValidPlacementPosition(cellPos, isShieldTower, isGeneratorTower, isScratchTower, targetTilemap);
             if (isGeneratorTower)
             {
-                canPlace &= IsValidPlacementPosition(leftCellPos, isShieldTower, isGeneratorTower, isScratchTower);
+                canPlace &= IsValidPlacementPosition(leftCellPos, isShieldTower, isGeneratorTower, isScratchTower, targetTilemap);
             }
 
             if (canPlace)
@@ -141,7 +148,6 @@ public class TilemapManager : MonoBehaviour
                 Debug.Log($"Cannot place {towerToPlace.name} at {cellPos}{(isGeneratorTower ? $" or {leftCellPos}" : "")}. " +
                           $"Target tilemap ({targetTilemap?.name}): HasTile={targetTilemap?.HasTile(cellPos)}, " +
                           $"Left tile HasTile={targetTilemap?.HasTile(leftCellPos)}, " +
-                          $"Other tilemap ({otherTilemap?.name}): HasTile={otherTilemap != null && otherTilemap.HasTile(cellPos)}, " +
                           $"Tile occupied: {placedTowers.ContainsKey(cellPos)} or {placedTowers.ContainsKey(leftCellPos)}, " +
                           $"Sufficient currency: {gameManager.HasEnoughCurrency(towerCost)}", this);
             }
@@ -251,18 +257,14 @@ public class TilemapManager : MonoBehaviour
         }
     }
 
-    private bool IsValidPlacementPosition(Vector3Int cellPos, bool isShieldTower, bool isGeneratorTower, bool isScratchTower)
+    private bool IsValidPlacementPosition(Vector3Int cellPos, bool isShieldTower, bool isGeneratorTower, bool isScratchTower, Tilemap targetTilemap)
     {
         if (towerToPlace == null)
         {
             return false;
         }
 
-        Tilemap targetTilemap = isShieldTower ? pathTilemap : (isScratchTower ? GetScratchTowerTilemap(cellPos) : placementTilemap);
-        Tilemap otherTilemap = isShieldTower ? placementTilemap : pathTilemap;
-
         bool hasTile = targetTilemap != null && targetTilemap.HasTile(cellPos);
-        bool isPathTile = otherTilemap != null && otherTilemap.HasTile(cellPos);
         bool isOccupied = placedTowers.ContainsKey(cellPos);
         bool hasEnoughCurrency = gameManager.HasEnoughCurrency(towerCost);
 
@@ -272,27 +274,10 @@ public class TilemapManager : MonoBehaviour
         }
         else
         {
-            return hasTile && !isPathTile && !isOccupied && hasEnoughCurrency;
+            // Allow placement on rightFacingScratchTowerMap or placementTilemap for all non-ShieldTower
+            bool isRightFacingTile = rightFacingScratchTowerMap != null && rightFacingScratchTowerMap.HasTile(cellPos);
+            return (hasTile || isRightFacingTile) && !isOccupied && hasEnoughCurrency;
         }
-    }
-
-    private Tilemap GetScratchTowerTilemap(Vector3 worldPos)
-    {
-        Vector3Int cellPos = rightFacingScratchTowerMap.WorldToCell(worldPos);
-        if (rightFacingScratchTowerMap != null && rightFacingScratchTowerMap.HasTile(cellPos))
-        {
-            return rightFacingScratchTowerMap;
-        }
-        return placementTilemap;
-    }
-
-    private Tilemap GetScratchTowerTilemap(Vector3Int cellPos)
-    {
-        if (rightFacingScratchTowerMap != null && rightFacingScratchTowerMap.HasTile(cellPos))
-        {
-            return rightFacingScratchTowerMap;
-        }
-        return placementTilemap;
     }
 
     private bool CanAttack(Tower tower)
