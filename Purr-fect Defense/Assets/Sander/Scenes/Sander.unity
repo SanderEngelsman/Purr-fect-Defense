@@ -537,6 +537,7 @@ RectTransform:
   - {fileID: 1343666167}
   - {fileID: 2082285223}
   - {fileID: 1268689403}
+  - {fileID: 87699203}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -782,7 +783,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &87699200
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -859,7 +860,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1836783745}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 73624026}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -4380,6 +4381,7 @@ GameObject:
   m_Component:
   - component: {fileID: 777350999}
   - component: {fileID: 777350998}
+  - component: {fileID: 777351000}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -4431,6 +4433,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &777351000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 777350997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ee37ae0a89494543b22222c60813a0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameManager: {fileID: 777350998}
+  waveManager: {fileID: 860368181}
+  currencyAmount: 500
+  healthAmount: 50
+  fastEnemyPrefab: {fileID: 2992963078866100631, guid: ab55f5fb8ebd43a48bcd53da0a9ec3c9, type: 3}
+  tankEnemyPrefab: {fileID: 4624401258798809816, guid: 5ef5f090217809c49a62a78f9f1bed5d, type: 3}
+  flyingEnemyPrefab: {fileID: 3422071319490792281, guid: 48cce3d0312b7b945ac9acc33e4a72fe, type: 3}
+  stunEnemyPrefab: {fileID: 5136582293965461582, guid: 8cd98ced1dacc2a44b41526651d69d1f, type: 3}
 --- !u!1 &790952372
 GameObject:
   m_ObjectHideFlags: 0
@@ -13771,4 +13793,3 @@ SceneRoots:
   - {fileID: 1363759058}
   - {fileID: 73624026}
   - {fileID: 672570319}
-  - {fileID: 87699203}
