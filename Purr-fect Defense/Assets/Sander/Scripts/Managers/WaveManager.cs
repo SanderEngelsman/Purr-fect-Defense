@@ -12,7 +12,7 @@ public struct Wave
 
 public class WaveManager : MonoBehaviour
 {
-    [SerializeField] private Transform spawnPoint;
+    [SerializeField] public Transform spawnPoint;
     [SerializeField] private Wave[] waves;
     [SerializeField] private Button startWaveButton;
     [SerializeField] private TextMeshProUGUI waveLabel;

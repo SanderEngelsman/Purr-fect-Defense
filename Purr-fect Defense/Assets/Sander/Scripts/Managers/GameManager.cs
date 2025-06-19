@@ -44,6 +44,14 @@ public class GameManager : MonoBehaviour
         UpdateCurrencyLabel();
     }
 
+    public void AddBaseHealth(float amount)
+    {
+        baseHealth += amount;
+        UpdateBaseHealthLabel();
+        UpdateBaseSprite();
+        Debug.Log($"Added {amount} health. Current base health: {baseHealth}", this);
+    }
+
     public bool RemoveCurrency(float amount)
     {
         if (currency >= amount)
