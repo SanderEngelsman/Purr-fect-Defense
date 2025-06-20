@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class EnemyHealthBar : MonoBehaviour
 {
@@ -7,25 +7,32 @@ public class EnemyHealthBar : MonoBehaviour
     [SerializeField] private float worldOffset = 1.0f;
     [SerializeField] private float screenOffset = 5f;
 
-    [Header("Color Settings")]
+    [Header("Colors")]
     [SerializeField] private Color healthColor = new Color(0.2f, 0.8f, 0.2f);
     [SerializeField] private Color damageColor = new Color(0.8f, 0.2f, 0.2f);
     [SerializeField] private Color outlineColor = new Color(0, 0, 0);
 
-    [Header("Size Settings")]
+    [Header("Size")]
     [SerializeField] private float healthbarWidth = 100f;
     [SerializeField] private float healthbarHeight = 10f;
 
-    [Header("Overlay Canvases")]
-    [SerializeField, Tooltip("Canvases that should hide health bars when active (e.g., shop, pause menu)")]
-    private List<GameObject> overlayCanvases = new List<GameObject>();
+    [Header("Canvas Overrides")]
+    [SerializeField, Tooltip("Canvas GameObjects to ignore (e.g., HUD) when hiding health bars")]
+    private GameObject[] excludedCanvasObjects = null;
+    [SerializeField, Tooltip("Name of HUD canvas to ignore if not in excludedCanvasObjects (e.g., GameCanvas)")]
+    private string hudCanvasName = "GameCanvas";
 
     private Enemy enemy;
     private ShieldTower shieldTower;
-    private bool showHealthbar = false;
+    private bool showHealthBar = false;
     private Camera mainCamera;
     private float health;
     private float maxHealth;
+
+    private void Awake()
+    {
+        Debug.Log($"EnemyHealthBar Awake on {gameObject.name}. Script is running.", this);
+    }
 
     private void Start()
     {
@@ -35,12 +42,12 @@ public class EnemyHealthBar : MonoBehaviour
 
         if (enemy == null && shieldTower == null)
         {
-            Debug.LogWarning($"Neither Enemy nor ShieldTower component found on {gameObject.name}. Health bar will not function.", this);
+            Debug.LogWarning($"Neither Enemy nor ShieldTower component found on {gameObject.name}. Health bar disabled.", this);
             enabled = false;
             return;
         }
 
-        // Initialize health and maxHealth
+        // Initialize health
         if (enemy != null)
         {
             health = enemy.health;
@@ -51,11 +58,13 @@ public class EnemyHealthBar : MonoBehaviour
             health = shieldTower.health;
             maxHealth = shieldTower.maxHealth;
         }
+
+        Debug.Log($"HealthBar initialized for {gameObject.name}: health={health}, maxHealth={maxHealth}, showHealthBar={showHealthBar}", this);
     }
 
     private void Update()
     {
-        // Update health value
+        // Update health
         if (enemy != null)
         {
             health = enemy.health;
@@ -65,29 +74,60 @@ public class EnemyHealthBar : MonoBehaviour
             health = shieldTower.health;
         }
 
-        if (showHealthbar && (health <= 0 || (enemy == null && shieldTower == null)))
+        if (showHealthBar && (health <= 0 || (enemy == null && shieldTower == null)))
         {
-            showHealthbar = false;
+            showHealthBar = false;
+            Debug.Log($"HealthBar hidden for {gameObject.name}: health={health} or components missing", this);
         }
     }
 
     public void ShowHealthBar()
     {
-        showHealthbar = true;
+        showHealthBar = true;
+        Debug.Log($"ShowHealthBar called for {gameObject.name}, showHealthBar={showHealthBar}", this);
     }
 
     private void OnGUI()
     {
-        // Skip drawing if any overlay canvas is active
-        foreach (var canvas in overlayCanvases)
+        // Check canvases
+        Canvas[] canvases = FindObjectsOfType<Canvas>();
+        bool anyActiveCanvas = false;
+        string activeCanvasNames = "";
+
+        foreach (var canvas in canvases)
         {
-            if (canvas != null && canvas.activeInHierarchy)
+            bool isExcluded = (excludedCanvasObjects != null && excludedCanvasObjects.Any(obj => obj != null && obj.GetComponent<Canvas>() == canvas)) ||
+                              (!string.IsNullOrEmpty(hudCanvasName) && canvas.gameObject.name == hudCanvasName);
+            if (canvas.isActiveAndEnabled && !isExcluded)
             {
-                return;
+                anyActiveCanvas = true;
+                activeCanvasNames += canvas.name + ", ";
             }
         }
 
-        if (!showHealthbar || (enemy == null && shieldTower == null)) return;
+        if (anyActiveCanvas)
+        {
+            Debug.Log($"HealthBar skipped for {gameObject.name}: Active canvases={activeCanvasNames}", this);
+            return;
+        }
+
+        if (!showHealthBar || (enemy == null && shieldTower == null))
+        {
+            Debug.Log($"HealthBar not drawn for {gameObject.name}: showHealthBar={showHealthBar}, enemy={enemy != null}, shieldTower={shieldTower != null}", this);
+            return;
+        }
+
+        if (health <= 0 || maxHealth <= 0)
+        {
+            Debug.Log($"HealthBar not drawn for {gameObject.name}: health={health}, maxHealth={maxHealth}", this);
+            return;
+        }
+
+        if (mainCamera == null)
+        {
+            Debug.LogWarning($"HealthBar not drawn for {gameObject.name}: mainCamera is null", this);
+            return;
+        }
 
         Texture2D damageTexture = new Texture2D(1, 1);
         damageTexture.SetPixel(0, 0, damageColor);
@@ -103,16 +143,18 @@ public class EnemyHealthBar : MonoBehaviour
 
         Vector3 worldPosition = transform.position + Vector3.up * worldOffset;
         Vector3 screenPosition = mainCamera.WorldToScreenPoint(worldPosition);
-        float healthbarX = screenPosition.x - healthbarWidth / 2;
-        float healthbarY = Screen.height - screenPosition.y - healthbarHeight - screenOffset;
+        float healthBarX = screenPosition.x - healthbarWidth / 2;
+        float healthBarY = Screen.height - screenPosition.y - healthbarHeight - screenOffset;
 
         // Draw outline
-        GUI.DrawTexture(new Rect(healthbarX - 2, healthbarY - 2, healthbarWidth + 4, healthbarHeight + 4), outlineTexture);
+        GUI.DrawTexture(new Rect(healthBarX - 2, healthBarY - 2, healthbarWidth + 4, healthbarHeight + 4), outlineTexture);
         // Draw damage background
-        GUI.DrawTexture(new Rect(healthbarX, healthbarY, healthbarWidth, healthbarHeight), damageTexture);
+        GUI.DrawTexture(new Rect(healthBarX, healthBarY, healthbarWidth, healthbarHeight), damageTexture);
         // Draw health foreground
         float currentWidth = (health / maxHealth) * healthbarWidth;
-        GUI.DrawTexture(new Rect(healthbarX, healthbarY, currentWidth, healthbarHeight), healthTexture);
+        GUI.DrawTexture(new Rect(healthBarX, healthBarY, currentWidth, healthbarHeight), healthTexture);
+
+        Debug.Log($"HealthBar drawn for {gameObject.name}: health={health}/{maxHealth}, position=({healthBarX}, {healthBarY})", this);
 
         Destroy(damageTexture);
         Destroy(healthTexture);
@@ -121,16 +163,18 @@ public class EnemyHealthBar : MonoBehaviour
 
     private void OnValidate()
     {
-        // Warn about null or duplicate canvases
-        for (int i = 0; i < overlayCanvases.Count; i++)
+        if (excludedCanvasObjects != null)
         {
-            if (overlayCanvases[i] == null)
+            for (int i = 0; i < excludedCanvasObjects.Length; i++)
             {
-                Debug.LogWarning($"Overlay canvas at index {i} is null in EnemyHealthBar.", this);
-            }
-            else if (overlayCanvases.IndexOf(overlayCanvases[i]) != i)
-            {
-                Debug.LogWarning($"Duplicate overlay canvas {overlayCanvases[i].name} at index {i} in EnemyHealthBar.", this);
+                if (excludedCanvasObjects[i] == null)
+                {
+                    Debug.LogWarning($"ExcludedCanvasObject at index {i} is null in EnemyHealthBar.", this);
+                }
+                else if (!excludedCanvasObjects[i].GetComponent<Canvas>())
+                {
+                    Debug.LogWarning($"ExcludedCanvasObject at index {i} ({excludedCanvasObjects[i].name}) has no Canvas component.", this);
+                }
             }
         }
     }

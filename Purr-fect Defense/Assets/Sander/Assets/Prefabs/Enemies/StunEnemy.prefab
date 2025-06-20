@@ -138,6 +138,8 @@ MonoBehaviour:
   outlineColor: {r: 0, g: 0, b: 0, a: 1}
   healthbarWidth: 100
   healthbarHeight: 10
+  excludedCanvasObjects: []
+  hudCanvasName: Canvas
 --- !u!95 &-1434944213273624722
 Animator:
   serializedVersion: 5

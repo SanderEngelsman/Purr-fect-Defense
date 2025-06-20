@@ -133,12 +133,8 @@ MonoBehaviour:
   outlineColor: {r: 0, g: 0, b: 0, a: 1}
   healthbarWidth: 100
   healthbarHeight: 10
-  overlayCanvases:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  excludedCanvasObjects: []
+  hudCanvasName: Canvas
 --- !u!95 &3581054846800262143
 Animator:
   serializedVersion: 5
