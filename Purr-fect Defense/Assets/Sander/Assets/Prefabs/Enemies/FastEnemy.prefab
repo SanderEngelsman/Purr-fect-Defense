@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a044404524db047438ccd6fffd2d3f49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 50
+  maxHealth: 75
   speed: 3
   isFlying: 0
   currencyValue: 15

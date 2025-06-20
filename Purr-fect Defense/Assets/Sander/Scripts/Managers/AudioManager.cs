@@ -13,6 +13,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField, Tooltip("AudioSource for 2D audio playback")] private AudioSource audioSource;
     [SerializeField, Tooltip("AudioSource for background music (on separate GameObject)")] private AudioSource backgroundMusicAudioSource;
     [SerializeField, Tooltip("Name of BackgroundMusic GameObject (e.g., BackgroundMusic)")] private string backgroundMusicObjectName = "BackgroundMusic";
+    [SerializeField] private AudioSource towerPlaceAudioSource;
 
     private bool isGameEnded = false;
     private float lastResumeTime = -1f;
@@ -123,9 +124,9 @@ public class AudioManager : MonoBehaviour
 
     public void PlayTowerPlaceSound()
     {
-        if (towerPlaceClip != null && audioSource != null)
+        if (towerPlaceClip != null && towerPlaceAudioSource != null)
         {
-            audioSource.PlayOneShot(towerPlaceClip);
+            towerPlaceAudioSource.PlayOneShot(towerPlaceClip);
             Debug.Log("Played tower place sound.", this);
         }
         else
