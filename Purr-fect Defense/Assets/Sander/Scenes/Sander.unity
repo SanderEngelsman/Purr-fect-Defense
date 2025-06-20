@@ -751,7 +751,11 @@ MonoBehaviour:
   towerPlaceClip: {fileID: 8300000, guid: 8f009b0974efa1142bc68d213984ee5a, type: 3}
   buttonClickClip: {fileID: 8300000, guid: 4c30c99ed06d2384fb652ab789d4fe01, type: 3}
   baseAttackClip: {fileID: 8300000, guid: f4c5ec9efd1f68440be0d4ef08e67cf4, type: 3}
+  winClip: {fileID: 8300000, guid: e5061a4acaa47734aa291d41c2127079, type: 3}
+  loseClip: {fileID: 8300000, guid: 92e7125eb20af5c40acd57d2fe106de2, type: 3}
   audioSource: {fileID: 84946665}
+  backgroundMusicAudioSource: {fileID: 1363759057}
+  backgroundMusicObjectName: BackgroundMusic
 --- !u!4 &84946667
 Transform:
   m_ObjectHideFlags: 0
@@ -4671,85 +4675,7 @@ MonoBehaviour:
   spawnPoint: {fileID: 1408609373}
   waves:
   - enemies:
-    - {fileID: 5136582293965461582, guid: 8cd98ced1dacc2a44b41526651d69d1f, type: 3}
-    - {fileID: 5136582293965461582, guid: 8cd98ced1dacc2a44b41526651d69d1f, type: 3}
-    - {fileID: 5136582293965461582, guid: 8cd98ced1dacc2a44b41526651d69d1f, type: 3}
-    - {fileID: 5136582293965461582, guid: 8cd98ced1dacc2a44b41526651d69d1f, type: 3}
-    - {fileID: 5136582293965461582, guid: 8cd98ced1dacc2a44b41526651d69d1f, type: 3}
-  - enemies:
     - {fileID: 2992963078866100631, guid: ab55f5fb8ebd43a48bcd53da0a9ec3c9, type: 3}
-    - {fileID: 2992963078866100631, guid: ab55f5fb8ebd43a48bcd53da0a9ec3c9, type: 3}
-    - {fileID: 4624401258798809816, guid: 5ef5f090217809c49a62a78f9f1bed5d, type: 3}
-    - {fileID: 2992963078866100631, guid: ab55f5fb8ebd43a48bcd53da0a9ec3c9, type: 3}
-    - {fileID: 2992963078866100631, guid: ab55f5fb8ebd43a48bcd53da0a9ec3c9, type: 3}
-    - {fileID: 2992963078866100631, guid: ab55f5fb8ebd43a48bcd53da0a9ec3c9, type: 3}
-    - {fileID: 4624401258798809816, guid: 5ef5f090217809c49a62a78f9f1bed5d, type: 3}
-    - {fileID: 2992963078866100631, guid: ab55f5fb8ebd43a48bcd53da0a9ec3c9, type: 3}
-    - {fileID: 5136582293965461582, guid: 8cd98ced1dacc2a44b41526651d69d1f, type: 3}
-    - {fileID: 4624401258798809816, guid: 5ef5f090217809c49a62a78f9f1bed5d, type: 3}
-  - enemies:
-    - {fileID: 3422071319490792281, guid: 48cce3d0312b7b945ac9acc33e4a72fe, type: 3}
-    - {fileID: 4624401258798809816, guid: 5ef5f090217809c49a62a78f9f1bed5d, type: 3}
-    - {fileID: 2992963078866100631, guid: ab55f5fb8ebd43a48bcd53da0a9ec3c9, type: 3}
-    - {fileID: 2992963078866100631, guid: ab55f5fb8ebd43a48bcd53da0a9ec3c9, type: 3}
-    - {fileID: 5136582293965461582, guid: 8cd98ced1dacc2a44b41526651d69d1f, type: 3}
-    - {fileID: 5136582293965461582, guid: 8cd98ced1dacc2a44b41526651d69d1f, type: 3}
-    - {fileID: 4624401258798809816, guid: 5ef5f090217809c49a62a78f9f1bed5d, type: 3}
-    - {fileID: 2992963078866100631, guid: ab55f5fb8ebd43a48bcd53da0a9ec3c9, type: 3}
-    - {fileID: 3422071319490792281, guid: 48cce3d0312b7b945ac9acc33e4a72fe, type: 3}
-    - {fileID: 3422071319490792281, guid: 48cce3d0312b7b945ac9acc33e4a72fe, type: 3}
-    - {fileID: 2992963078866100631, guid: ab55f5fb8ebd43a48bcd53da0a9ec3c9, type: 3}
-    - {fileID: 4624401258798809816, guid: 5ef5f090217809c49a62a78f9f1bed5d, type: 3}
-    - {fileID: 4624401258798809816, guid: 5ef5f090217809c49a62a78f9f1bed5d, type: 3}
-    - {fileID: 5136582293965461582, guid: 8cd98ced1dacc2a44b41526651d69d1f, type: 3}
-    - {fileID: 2992963078866100631, guid: ab55f5fb8ebd43a48bcd53da0a9ec3c9, type: 3}
-  - enemies:
-    - {fileID: 4624401258798809816, guid: 5ef5f090217809c49a62a78f9f1bed5d, type: 3}
-    - {fileID: 4624401258798809816, guid: 5ef5f090217809c49a62a78f9f1bed5d, type: 3}
-    - {fileID: 3422071319490792281, guid: 48cce3d0312b7b945ac9acc33e4a72fe, type: 3}
-    - {fileID: 2992963078866100631, guid: ab55f5fb8ebd43a48bcd53da0a9ec3c9, type: 3}
-    - {fileID: 3422071319490792281, guid: 48cce3d0312b7b945ac9acc33e4a72fe, type: 3}
-    - {fileID: 3422071319490792281, guid: 48cce3d0312b7b945ac9acc33e4a72fe, type: 3}
-    - {fileID: 4624401258798809816, guid: 5ef5f090217809c49a62a78f9f1bed5d, type: 3}
-    - {fileID: 5136582293965461582, guid: 8cd98ced1dacc2a44b41526651d69d1f, type: 3}
-    - {fileID: 5136582293965461582, guid: 8cd98ced1dacc2a44b41526651d69d1f, type: 3}
-    - {fileID: 2992963078866100631, guid: ab55f5fb8ebd43a48bcd53da0a9ec3c9, type: 3}
-    - {fileID: 2992963078866100631, guid: ab55f5fb8ebd43a48bcd53da0a9ec3c9, type: 3}
-    - {fileID: 2992963078866100631, guid: ab55f5fb8ebd43a48bcd53da0a9ec3c9, type: 3}
-    - {fileID: 3422071319490792281, guid: 48cce3d0312b7b945ac9acc33e4a72fe, type: 3}
-    - {fileID: 4624401258798809816, guid: 5ef5f090217809c49a62a78f9f1bed5d, type: 3}
-    - {fileID: 3422071319490792281, guid: 48cce3d0312b7b945ac9acc33e4a72fe, type: 3}
-    - {fileID: 3422071319490792281, guid: 48cce3d0312b7b945ac9acc33e4a72fe, type: 3}
-    - {fileID: 3422071319490792281, guid: 48cce3d0312b7b945ac9acc33e4a72fe, type: 3}
-    - {fileID: 2992963078866100631, guid: ab55f5fb8ebd43a48bcd53da0a9ec3c9, type: 3}
-    - {fileID: 5136582293965461582, guid: 8cd98ced1dacc2a44b41526651d69d1f, type: 3}
-    - {fileID: 2992963078866100631, guid: ab55f5fb8ebd43a48bcd53da0a9ec3c9, type: 3}
-  - enemies:
-    - {fileID: 4624401258798809816, guid: 5ef5f090217809c49a62a78f9f1bed5d, type: 3}
-    - {fileID: 4624401258798809816, guid: 5ef5f090217809c49a62a78f9f1bed5d, type: 3}
-    - {fileID: 4624401258798809816, guid: 5ef5f090217809c49a62a78f9f1bed5d, type: 3}
-    - {fileID: 5136582293965461582, guid: 8cd98ced1dacc2a44b41526651d69d1f, type: 3}
-    - {fileID: 5136582293965461582, guid: 8cd98ced1dacc2a44b41526651d69d1f, type: 3}
-    - {fileID: 4624401258798809816, guid: 5ef5f090217809c49a62a78f9f1bed5d, type: 3}
-    - {fileID: 2992963078866100631, guid: ab55f5fb8ebd43a48bcd53da0a9ec3c9, type: 3}
-    - {fileID: 2992963078866100631, guid: ab55f5fb8ebd43a48bcd53da0a9ec3c9, type: 3}
-    - {fileID: 2992963078866100631, guid: ab55f5fb8ebd43a48bcd53da0a9ec3c9, type: 3}
-    - {fileID: 5136582293965461582, guid: 8cd98ced1dacc2a44b41526651d69d1f, type: 3}
-    - {fileID: 4624401258798809816, guid: 5ef5f090217809c49a62a78f9f1bed5d, type: 3}
-    - {fileID: 5136582293965461582, guid: 8cd98ced1dacc2a44b41526651d69d1f, type: 3}
-    - {fileID: 3422071319490792281, guid: 48cce3d0312b7b945ac9acc33e4a72fe, type: 3}
-    - {fileID: 3422071319490792281, guid: 48cce3d0312b7b945ac9acc33e4a72fe, type: 3}
-    - {fileID: 3422071319490792281, guid: 48cce3d0312b7b945ac9acc33e4a72fe, type: 3}
-    - {fileID: 2992963078866100631, guid: ab55f5fb8ebd43a48bcd53da0a9ec3c9, type: 3}
-    - {fileID: 4624401258798809816, guid: 5ef5f090217809c49a62a78f9f1bed5d, type: 3}
-    - {fileID: 4624401258798809816, guid: 5ef5f090217809c49a62a78f9f1bed5d, type: 3}
-    - {fileID: 2992963078866100631, guid: ab55f5fb8ebd43a48bcd53da0a9ec3c9, type: 3}
-    - {fileID: 5136582293965461582, guid: 8cd98ced1dacc2a44b41526651d69d1f, type: 3}
-    - {fileID: 2992963078866100631, guid: ab55f5fb8ebd43a48bcd53da0a9ec3c9, type: 3}
-    - {fileID: 3422071319490792281, guid: 48cce3d0312b7b945ac9acc33e4a72fe, type: 3}
-    - {fileID: 4624401258798809816, guid: 5ef5f090217809c49a62a78f9f1bed5d, type: 3}
-    - {fileID: 4624401258798809816, guid: 5ef5f090217809c49a62a78f9f1bed5d, type: 3}
-    - {fileID: 4624401258798809816, guid: 5ef5f090217809c49a62a78f9f1bed5d, type: 3}
   startWaveButton: {fileID: 2100087818}
   waveLabel: {fileID: 1746483575}
 --- !u!4 &860368182
@@ -5964,6 +5890,18 @@ MonoBehaviour:
       - m_Target: {fileID: 998113356}
         m_TargetAssemblyTypeName: Menu, Assembly-CSharp
         m_MethodName: Restart
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 84946666}
+        m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
+        m_MethodName: ResumeBackgroundMusic
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8703,6 +8641,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1363759058}
   - component: {fileID: 1363759057}
+  - component: {fileID: 1363759059}
   m_Layer: 0
   m_Name: background music
   m_TagString: Untagged
@@ -8722,7 +8661,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: d51ba7c5d38ce594bb5d844b5a891a63, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.05
+  m_Volume: 0.3
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -8821,6 +8760,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1363759059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1363759056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0250edb6365e5c2439a1caf21d0ca06a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1392152870
 GameObject:
   m_ObjectHideFlags: 0
@@ -12175,6 +12126,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1511765749}
         m_TargetAssemblyTypeName: Menu, Assembly-CSharp
         m_MethodName: Restart
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 84946666}
+        m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
+        m_MethodName: ResumeBackgroundMusic
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

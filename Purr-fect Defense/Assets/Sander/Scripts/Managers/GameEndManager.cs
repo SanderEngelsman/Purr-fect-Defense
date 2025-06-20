@@ -55,7 +55,8 @@ public class GameEndManager : MonoBehaviour
         if (winScreenCanvas != null)
         {
             winScreenCanvas.SetActive(true);
-            Debug.Log("Win Screen activated.", this);
+            Debug.Log("Win Screen activated. Calling PlayWinSound.", this);
+            AudioManager.Instance.PlayWinSound();
             gameEnded = true;
             Time.timeScale = 0; // Pause game
         }
@@ -66,8 +67,10 @@ public class GameEndManager : MonoBehaviour
         if (loseScreenCanvas != null)
         {
             loseScreenCanvas.SetActive(true);
-            Debug.Log("Lose Screen activated.", this);
+            Debug.Log("Lose Screen activated. Calling PlayLoseSound.", this);
+            AudioManager.Instance.PlayLoseSound();
             gameEnded = true;
+            Time.timeScale = 0; // Pause game
         }
     }
 }
