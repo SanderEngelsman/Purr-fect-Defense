@@ -150,9 +150,9 @@ public class AudioManager : MonoBehaviour
 
     public void PlayBaseAttackSound()
     {
-        if (baseAttackClip != null && audioSource != null)
+        if (baseAttackClip != null && towerPlaceAudioSource != null)
         {
-            audioSource.PlayOneShot(baseAttackClip);
+            towerPlaceAudioSource.PlayOneShot(baseAttackClip);
             Debug.Log("Played base attack sound.", this);
         }
         else

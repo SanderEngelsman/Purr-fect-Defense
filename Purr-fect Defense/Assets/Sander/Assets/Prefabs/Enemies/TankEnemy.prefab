@@ -100,10 +100,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7858eebd8d99a62489bb80fbcc4f36fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 300
+  maxHealth: 350
   speed: 1
   isFlying: 0
-  currencyValue: 25
+  currencyValue: 15
   shieldAttackRange: 0.5
   shieldAttackDamage: 20
   shieldAttackInterval: 1

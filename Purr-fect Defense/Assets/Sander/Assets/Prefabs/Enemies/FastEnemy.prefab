@@ -103,7 +103,7 @@ MonoBehaviour:
   maxHealth: 75
   speed: 3
   isFlying: 0
-  currencyValue: 15
+  currencyValue: 10
   shieldAttackRange: 0.5
   shieldAttackDamage: 10
   shieldAttackInterval: 1
