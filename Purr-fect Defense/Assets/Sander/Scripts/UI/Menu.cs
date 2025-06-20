@@ -45,17 +45,9 @@ public class Menu : MonoBehaviour
     public void Restart()
     {
         Time.timeScale = 1f;
-        StartCoroutine(RestartWithSoundDelay());
-    }
-
-    private IEnumerator RestartWithSoundDelay()
-    {
-        yield return new WaitForSecondsRealtime(1f); // Allow win/lose sounds
-        AudioManager.Instance.StopAllSounds();
-        // Remove ResumeBackgroundMusic, rely on button event
-        Debug.Log("Restarting scene with audio reset, skipping music resume.", this);
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
 
     public void StartVideo()
     {
