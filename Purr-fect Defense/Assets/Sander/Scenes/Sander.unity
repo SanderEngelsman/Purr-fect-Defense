@@ -983,6 +983,7 @@ GameObject:
   - component: {fileID: 88585779}
   - component: {fileID: 88585778}
   - component: {fileID: 88585781}
+  - component: {fileID: 88585782}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -1117,6 +1118,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   videoPlayer: {fileID: 0}
+--- !u!114 &88585782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 88585776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b73ccfc7bfee89940b9ae6c347532232, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleFactor: 1.1
 --- !u!1 &138429809
 GameObject:
   m_ObjectHideFlags: 0
@@ -4318,6 +4332,7 @@ GameObject:
   - component: {fileID: 775425093}
   - component: {fileID: 775425092}
   - component: {fileID: 775425095}
+  - component: {fileID: 775425096}
   m_Layer: 5
   m_Name: continue
   m_TagString: Untagged
@@ -4476,6 +4491,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   videoPlayer: {fileID: 0}
+--- !u!114 &775425096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 775425090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b73ccfc7bfee89940b9ae6c347532232, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleFactor: 1.1
 --- !u!1 &777350997
 GameObject:
   m_ObjectHideFlags: 0
@@ -6096,6 +6124,7 @@ GameObject:
   - component: {fileID: 998113354}
   - component: {fileID: 998113353}
   - component: {fileID: 998113356}
+  - component: {fileID: 998113357}
   m_Layer: 5
   m_Name: main menu
   m_TagString: Untagged
@@ -6145,7 +6174,7 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 0.49411765, g: 0.49411765, b: 0.49411765, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
@@ -6254,6 +6283,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   videoPlayer: {fileID: 672570318}
+--- !u!114 &998113357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 998113351}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b73ccfc7bfee89940b9ae6c347532232, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleFactor: 1.1
 --- !u!1 &1007977095
 GameObject:
   m_ObjectHideFlags: 0
@@ -7627,6 +7669,7 @@ GameObject:
   - component: {fileID: 1268689405}
   - component: {fileID: 1268689404}
   - component: {fileID: 1268689407}
+  - component: {fileID: 1268689408}
   m_Layer: 5
   m_Name: back
   m_TagString: Untagged
@@ -7785,6 +7828,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   videoPlayer: {fileID: 672570318}
+--- !u!114 &1268689408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1268689402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b73ccfc7bfee89940b9ae6c347532232, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleFactor: 1.1
 --- !u!1 &1268804544
 GameObject:
   m_ObjectHideFlags: 0
@@ -8113,6 +8169,7 @@ GameObject:
   - component: {fileID: 1285716737}
   - component: {fileID: 1285716736}
   - component: {fileID: 1285716735}
+  - component: {fileID: 1285716738}
   m_Layer: 5
   m_Name: start
   m_TagString: Untagged
@@ -8246,6 +8303,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1285716733}
   m_CullTransparentMesh: 1
+--- !u!114 &1285716738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1285716733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b73ccfc7bfee89940b9ae6c347532232, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleFactor: 1.1
 --- !u!1 &1333070005
 GameObject:
   m_ObjectHideFlags: 0
@@ -9376,6 +9446,7 @@ GameObject:
   - component: {fileID: 1428987749}
   - component: {fileID: 1428987748}
   - component: {fileID: 1428987751}
+  - component: {fileID: 1428987752}
   m_Layer: 5
   m_Name: quit
   m_TagString: Untagged
@@ -9522,6 +9593,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   videoPlayer: {fileID: 0}
+--- !u!114 &1428987752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1428987746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b73ccfc7bfee89940b9ae6c347532232, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleFactor: 1.1
 --- !u!1 &1484086275
 GameObject:
   m_ObjectHideFlags: 0
@@ -12344,6 +12428,7 @@ GameObject:
   - component: {fileID: 1511765747}
   - component: {fileID: 1511765746}
   - component: {fileID: 1511765749}
+  - component: {fileID: 1511765750}
   m_Layer: 5
   m_Name: main menu
   m_TagString: Untagged
@@ -12393,7 +12478,7 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 0.49056602, g: 0.49056602, b: 0.49056602, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
@@ -12478,6 +12563,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   videoPlayer: {fileID: 672570318}
+--- !u!114 &1511765750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1511765744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b73ccfc7bfee89940b9ae6c347532232, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleFactor: 1.1
 --- !u!1 &1556001736
 GameObject:
   m_ObjectHideFlags: 0
@@ -13058,6 +13156,7 @@ GameObject:
   - component: {fileID: 1819546584}
   - component: {fileID: 1819546583}
   - component: {fileID: 1819546586}
+  - component: {fileID: 1819546587}
   m_Layer: 5
   m_Name: tutorial
   m_TagString: Untagged
@@ -13204,6 +13303,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   videoPlayer: {fileID: 672570318}
+--- !u!114 &1819546587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1819546581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b73ccfc7bfee89940b9ae6c347532232, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleFactor: 1.1
 --- !u!1 &1836783744
 GameObject:
   m_ObjectHideFlags: 0
