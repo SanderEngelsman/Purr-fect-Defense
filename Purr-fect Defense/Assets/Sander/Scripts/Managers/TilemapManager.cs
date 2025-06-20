@@ -103,7 +103,7 @@ public class TilemapManager : MonoBehaviour
             bool isRightFacingTile = rightFacingScratchTowerMap != null && rightFacingScratchTowerMap.HasTile(cellPos);
             if (isRightFacingTile && !isShieldTower)
             {
-                targetTilemap = rightFacingScratchTowerMap;
+                targetTilemap = placementTilemap;
             }
 
             if (previewTower != null)
