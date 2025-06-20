@@ -4,7 +4,7 @@ public class ModTools : MonoBehaviour
 {
     [SerializeField, Tooltip("GameManager for currency and health modifications")]
     private GameManager gameManager;
-    [SerializeField, Tooltip("WaveManager for enemy spawn point")]
+    [SerializeField, Tooltip("WaveManager for enemy spawn point and wave control")]
     private WaveManager waveManager;
     [SerializeField, Tooltip("Amount of currency to add with Right Shift + C")]
     private float currencyAmount = 100f;
@@ -65,6 +65,19 @@ public class ModTools : MonoBehaviour
                 }
             }
 
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                if (waveManager != null)
+                {
+                    Debug.Log("ModTools: Right Shift + S pressed, attempting to skip wave.", this);
+                    waveManager.SkipWave();
+                }
+                else
+                {
+                    Debug.LogWarning("WaveManager is null, cannot skip wave.", this);
+                }
+            }
+
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
                 SpawnEnemy(fastEnemyPrefab, "FastEnemy");
@@ -100,6 +113,6 @@ public class ModTools : MonoBehaviour
             return;
         }
         GameObject enemy = Instantiate(enemyPrefab, waveManager.spawnPoint.position, Quaternion.identity);
-        Debug.Log($"ModTools: Spawned {enemyName} at {waveManager.spawnPoint.position}.", this);
+        Debug.Log($"WaveManager: Spawned {enemyName} at {waveManager.spawnPoint}", enemy);
     }
 }

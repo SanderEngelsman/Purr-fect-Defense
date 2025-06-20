@@ -97,6 +97,38 @@ public class WaveManager : MonoBehaviour
         }
     }
 
+    public void SkipWave()
+    {
+        if (isPreGame)
+        {
+            Debug.LogWarning("Cannot skip wave during pre-game.", this);
+            return;
+        }
+        if (isWaveActive)
+        {
+            Debug.LogWarning("Cannot skip wave while a wave is active.", this);
+            return;
+        }
+        if (currentWave >= waves.Length)
+        {
+            Debug.LogWarning("No more waves to skip to.", this);
+            return;
+        }
+
+        currentWave++;
+        waveNumber = currentWave + 1; // Update display number (1-based)
+        UpdateWaveLabel();
+        if (startWaveButton != null)
+        {
+            startWaveButton.gameObject.SetActive(true); // Ensure button visible
+            Debug.Log($"Wave skipped to {waveNumber}/{waves.Length}. StartWaveButton active: {startWaveButton.gameObject.activeSelf}", this);
+        }
+        else
+        {
+            Debug.LogWarning("StartWaveButton is null, cannot ensure visibility.", this);
+        }
+    }
+
     private IEnumerator StartWave()
     {
         Wave wave = waves[currentWave];
